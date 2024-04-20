@@ -24,6 +24,8 @@ function loginValidation($conn, $user_Email, $user_Pass)
     }
 }
 
+
+
 if (isset($user_Email, $user_Pass)) { // If both email and password are set (not null)
     loginValidation($conn, $user_Email, $user_Pass); // Call the loginValidation function to validate user login
 }

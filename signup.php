@@ -7,20 +7,26 @@ $serverName = "localhost";
 $username = "root";
 $password = "0121";
 $dbname = "user_record";
-$registered;
-
+$conn = mysqli_connect($serverName,$username,$password,$dbname);
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 // Function to verify if the password matches the confirmation
 function verifyPass($user_Pass, $passVerification){
     return $user_Pass == $passVerification;
 }
 
+$sql = "SELECT * FROM user_info WHERE user_email='$user_Email'";
+$result = mysqli_query($conn, $sql);
+if($result && mysqli_num_rows($result) > 0){
+    header('Location:registration.php?error=user_exists');
+    exit;
+}
+
+
 // Check if password and confirmation match
 if(verifyPass($user_Pass,$passVerification)){
-    // Establish connection to the database
-    $conn = mysqli_connect($serverName,$username,$password,$dbname);
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
+
     
     // SQL query to insert user information into the database
     $sql = "INSERT into user_info (username,user_email,user_pass,confirm_Pass)

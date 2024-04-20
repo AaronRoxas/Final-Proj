@@ -19,7 +19,7 @@
     </nav>
 
     <div class="sign-up-container">
-            <div class="sign-up-box">
+            <div class="sign-up-box" style="transition = 0.3s ease in;";>
                 <h2>Register</h2>
             <form action="signup.php" method="post">
                 <div class="input-box"><input type="text" name="username" id="" placeholder="Enter your Name" required></div>
@@ -31,6 +31,11 @@
                     if(isset($_GET['error']) && $_GET['error'] == 'password_mismatch'){
                         echo "<p style='color: red;'>Password did not match.</p>";
                     }
+                    if(isset($_GET['error']) && $_GET['error'] == 'user_exists'){
+                        echo "<p style='color: red;'>Email already registered!</p>";
+                    }
+                    
+                    
                 ?>
             </form>
         </div>
