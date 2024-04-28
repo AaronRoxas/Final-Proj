@@ -1,10 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign up</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+   <style>
+    <?php include 'style.css'?>
+   </style>
 </head>
 <body class="sign-up-body">
     <nav>
@@ -25,9 +28,13 @@
                 <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
                 <div class="input-box"><input type="password" name="password" id="" placeholder="Enter Password" required></div>
                 <div class="input-box button"><input type="submit" value="Login"></div>
-                <?php
+                <?php                    
                     if(isset($_GET['error']) && $_GET['error'] == 'info_mismatch'){
                         echo "<p style='color: red;'>Invalid email or password.</p>";
+                    }
+                    if(isset($_GET['userCreated'])){
+                        echo '<script>
+                        alert("User Successfully Created");</script>';
                     }
                 ?>
             </form>
