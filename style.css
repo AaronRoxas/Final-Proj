@@ -18,7 +18,10 @@ nav{
     padding-top: 37px;
 }
 #logo{
-    padding-right: 84px;
+    display:block;
+    width: 123px;
+    height:50px;
+    float: left;
 }
 
 nav a{
@@ -30,6 +33,7 @@ nav a{
     text-decoration: none;
     font-size: 17px;
 }
+
 
 .right-nav{
     float: right;   
@@ -199,3 +203,17 @@ form .input-box input{
     margin-bottom: 14px;
   }
   
+/* About Page Design */
+.active{
+    text-decoration: underline;
+}
+.about-wrapper{
+    border: 1px solid black;
+    margin-top: 12px;
+}
+.about-container{
+    padding: 14px;
+    
+    display: grid;
+    place-items: center;
+}
