@@ -5,13 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-   <style>
-    <?php include 'style.css'?>
-   </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="sign-up-body">
     <nav>
-        <a href="" id="logo"><strong>Logo</strong></a>
+    <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo">
         <a href="index.html">Home</a>
         <a href="">About</a>
         <a href="">Contact</a>

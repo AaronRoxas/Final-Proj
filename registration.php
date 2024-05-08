@@ -8,7 +8,7 @@
 </head>
 <body class="sign-up-body">
     <nav>
-        <a href="" id="logo"><strong>Logo</strong></a>
+    <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo">
         <a href="index.html">Home</a>
         <a href="">About</a>
         <a href="">Contact</a>
@@ -24,9 +24,15 @@
             <form action="signup.php" method="post">
                 <div class="input-box"><input type="text" name="username" id="" placeholder="Enter your Name" required></div>
                 <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
+                <div class="input-box"><select name="role" id="">
+                    <option value="" disabled selected>Enter your role</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select></div>
                 <div class="input-box"><input type="password" name="password" id="" placeholder="Create Password" required></div>
                 <div class="input-box"><input type="password" name="confirmPass" id="" placeholder="Confirm Password" required></div>
                 <div class="input-box button"><input type="submit" value="Register Now"></div>
+                
                 <?php
                     if(isset($_GET['error']) && $_GET['error'] == 'password_mismatch'){
                         echo "<p style='color: red;'>Password did not match.</p>";
@@ -38,6 +44,7 @@
                     
                 ?>
             </form>
+            
         </div>
     </div>
 
