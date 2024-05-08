@@ -3,6 +3,7 @@ include "functions.php";
 $user_Name = $_POST["username"];
 $user_Email = $_POST["email"];
 $user_Pass = $_POST["password"];
+$user_Role = $_POST["role"];
 $passVerification = $_POST["confirmPass"];
 $serverName = "localhost";
 $username = "root";
@@ -23,8 +24,8 @@ if($result && mysqli_num_rows($result) > 0){
 // Check if password and confirmation match
 if(verifyPass($user_Pass,$passVerification)){
     // SQL query to insert user information into the database
-    $sql = "INSERT into user_info (username,user_email,user_pass,confirm_Pass)
-            VALUES ('$user_Name','$user_Email','$user_Pass','$passVerification')";
+    $sql = "INSERT into user_info (username,user_email,user_pass,confirm_Pass,user_Role)
+            VALUES ('$user_Name','$user_Email','$user_Pass','$passVerification','$user_Role')";
     // Execute the query
     if (mysqli_query($conn, $sql)) {
         echo "New record created successfully";

@@ -33,6 +33,9 @@ nav a{
     text-decoration: none;
     font-size: 17px;
 }
+nav a:hover{
+    text-decoration: underline;
+}
 
 
 .right-nav{
@@ -180,6 +183,19 @@ form .input-box input{
     border-radius: 6px;
     transition: all 0.3s ease;
 }
+form .input-box select {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding: 0 15px;
+    font-size: 17px;
+    font-weight: 400;
+    color: #333;
+    border: 1.5px solid #C7BEBE;
+    border-bottom-width: 2.5px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
 .input-box.button input{
     color: #fff;
     letter-spacing: 1px;
@@ -195,7 +211,6 @@ form .input-box input{
   {
     padding-top: 20px;
     margin-bottom: -20px;
-    
   }
   .sign-up-body nav{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
