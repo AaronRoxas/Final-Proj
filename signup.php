@@ -1,18 +1,11 @@
 <?php
 include "functions.php";
+include "db_conn.php";
 $user_Name = $_POST["username"];
 $user_Email = $_POST["email"];
 $user_Pass = $_POST["password"];
 $user_Role = $_POST["role"];
 $passVerification = $_POST["confirmPass"];
-$serverName = "localhost";
-$username = "root";
-$password = "0121";
-$dbname = "user_record";
-$conn = mysqli_connect($serverName,$username,$password,$dbname);
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
 
 
 $sql = "SELECT * FROM user_info WHERE user_email='$user_Email'";
