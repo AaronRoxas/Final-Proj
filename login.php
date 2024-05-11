@@ -23,6 +23,7 @@
             <div class="sign-up-box">
                 <h2>Login</h2>
                 <form action="login-validate.php" method="post">
+        
                 <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
                 <div class="input-box"><input type="password" name="password" id="" placeholder="Enter Password" required></div>
                 <div class="input-box button"><input type="submit" value="Login"></div>
