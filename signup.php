@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
 include "functions.php";
 include "db_conn.php";
 $user_Name = $_POST["username"];
@@ -9,9 +9,9 @@ $_SESSION["role"] = $user_Role;
 $passVerification = $_POST["confirmPass"];
 $studID =0;
 $teacherID = 0;
-$sql = "SELECT 'student' AS role FROM students WHERE email='$user_Email'
+$sql = "SELECT 's' AS role FROM students WHERE email='$user_Email'
         UNION
-        SELECT 'teacher' AS role FROM teachers WHERE email='$user_Email'";
+        SELECT 't' AS role FROM teachers WHERE email='$user_Email'";
 $result = mysqli_query($conn, $sql);
 if($result && mysqli_num_rows($result) > 0){
     header('Location:registration.php?error=user_exists');
@@ -22,7 +22,7 @@ if($result && mysqli_num_rows($result) > 0){
 if(verifyPass($user_Pass,$passVerification)){
     // SQL query to insert user information into the database
             if(isset($user_Role)){
-                if($user_Role == "teacher")
+                if($user_Role == "t")
                 {
                     $teacherID = rand(9000,10000);
                     $sql = "INSERT INTO teachers(teacher_id,user_name,email,user_password,user_role)
@@ -43,7 +43,7 @@ if(verifyPass($user_Pass,$passVerification)){
                        
                         exit();        
                 }
-                else if($user_Role == "student")
+                else if($user_Role == "s")
                 {
                     $studID = rand(2000,5000);
                     $sql = "INSERT INTO students(student_id,user_name,email,user_password,user_role)

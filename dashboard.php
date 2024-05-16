@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <div class="logo"> <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo"></div>
+        <div class="logo"><img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo"></div>
         <nav>
             <ul>
                 <li><a href="logout.php">Logout</a></li>
@@ -18,46 +18,72 @@
     <main>
         <aside>
             <ul>
-            <h2>Settings</h2>
-            <p><a href="#">Change Password</a></p>
-            <p><a href="#">Update Email</a></p>
+                <h2>Settings</h2>
+                <p><a href="#">Change Password</a></p>
+                <p><a href="#">Update Email</a></p>
             </ul>
         </aside>
         <section id="profile" class="content">
             <h2>Profile</h2>
-            <p>Name: 
-            <?php session_start();
-                            if(isset($_SESSION['user_email'])){
-                                echo $_SESSION['username'];}                
-            ?></p>
+            <p>Name: <?php include 'functions.php'; if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
             <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
-            <p>Email: <?php echo $_SESSION['user_email']?> </p>
+            <p>Email: <?php echo $_SESSION['user_email']; ?></p>
         </section>
         <section id="courses" class="content">
             <h2>Courses</h2>
-            <button onclick="addCourse()">Add Course</button>
+            <button onclick="showCourseForm()">Add Course</button>
+            <form id="courseForm" action="add_course.php" method="POST" style="display: none;">
+                <input type="text" name="course_name" placeholder="Course Name" required>
+                <input type="text" name="course_id" placeholder="Course ID" required>
+                <button type="submit">Add Course</button>
+            </form>
             <table>
                 <thead>
                     <tr>
                         <th>Course</th>
+                        <th>Course ID</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="courseList">
-                    <tr>
-                        <td>Algebra I</td>
-                        <td>
-                            <button onclick="editCourse(this)">Edit</button>
-                            <button onclick="deleteCourse(this)">Delete</button>
+                    <?php
+                    // Fetch courses from the database
+                 
+                    include "db_conn.php";
+                    $teacher_id = $_SESSION['user_id'];
+                    $stmt = $conn->prepare("SELECT course_id, course_name FROM courses WHERE teacher_id = ?");
+                    $stmt->bind_param("i", $teacher_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['course_name']}</td>
+                                <td>{$row['course_id']}</td>
+                                <td>
+                            <form action='delete_course.php' method='POST' style='display:inline;'>
+                                <input type='hidden' name='course_name' value='{$row['course_name']}'>
+                                <button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button>
+                            </form>
                         </td>
-                    </tr>
-                    <!-- Add more courses as needed -->
+                              </tr>";
+                    }
+                    $stmt->close();
+                    ?>
                 </tbody>
             </table>
         </section>
         <section id="students" class="content">
             <h2>Students</h2>
-            <button onclick="addStudent()">Add Student</button>
+            <button onclick="showStudentForm()">Add Student</button>
+            <!-- <form id="studentForm" action="add_student.php" method="POST" style="display: none;">
+                <input type="text" name="student_name" placeholder="Student Name" required>
+                <input type="text" name="student_id" placeholder="Student ID" required>
+                <select name="course_id" required>
+                    <option value="">Select Course</option>
+
+                </select>
+                <button type="submit">Add Student</button>
+            </form> -->
             <table>
                 <thead>
                     <tr>
@@ -68,27 +94,31 @@
                     </tr>
                 </thead>
                 <tbody id="studentList">
-                    <tr>
-                        <td>John Doe</td>
-                        <td>2022-2-1234</td>
-                        <td>Algebra I</td>
-                        <td>
-                            <button onclick="editStudent(this)">Edit</button>
-                            <button onclick="deleteStudent(this)">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Add more students as needed -->
+                    <?php
+                    // Fetch students from the database
+                    $stmt = $conn->prepare("SELECT students.student_id, students.user_name, students.student_number, courses.course_name 
+                                            FROM students 
+                                            JOIN courses ON students.course_id = courses.course_id 
+                                            WHERE courses.teacher_id = ?");
+                    $stmt->bind_param("i", $teacher_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['user_name']}</td>
+                                <td>{$row['student_number']}</td>
+                                <td>{$row['course_name']}</td>
+                                <td>
+                                    <button onclick=\"editStudent({$row['student_id']})\">Edit</button>
+                                    <button onclick=\"deleteStudent({$row['student_id']})\">Delete</button>
+                                </td>
+                              </tr>";
+                    }
+                    $stmt->close();
+                    $conn->close();
+                    ?>
                 </tbody>
             </table>
-        </section>
-        <section id="schedule" class="content">
-            <h2>Schedule</h2>
-            <ul>
-                <li>Monday: Algebra I - 9:00 AM</li>
-                <li>Tuesday: Biology - 10:00 AM</li>
-                <li>Wednesday: World History - 11:00 AM</li>
-                <li>Thursday: Art Appreciation - 1:00 PM</li>
-            </ul>
         </section>
 
     </main>
@@ -97,35 +127,15 @@
     </footer>
 
     <script>
-        function addCourse() {
-            // Add course logic here
-            alert("Add Course button clicked");
+        function showCourseForm() {
+            document.getElementById('courseForm').style.display = 'block';
         }
 
-        function editCourse(button) {
-            // Edit course logic here
-            alert("Edit Course button clicked");
+        function showStudentForm() {
+            document.getElementById('studentForm').style.display = 'block';
         }
 
-        function deleteCourse(button) {
-            // Delete course logic here
-            alert("Delete Course button clicked");
-        }
-
-        function addStudent() {
-            // Add student logic here
-            alert("Add Student button clicked");
-        }
-
-        function editStudent(button) {
-            // Edit student logic here
-            alert("Edit Student button clicked");
-        }
-
-        function deleteStudent(button) {
-            // Delete student logic here
-            alert("Delete Student button clicked");
-        }
+        // Add more functions as needed for edit and delete actions
     </script>
 </body>
 </html>
