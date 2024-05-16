@@ -31,18 +31,18 @@ if (isset($_POST['email'])) {
 
             if($_SESSION['user_role'] === "s"){
                 $_SESSION['user_id'] = $row['student_id'];
-                header('Location: student-dashboard.php');
+                header('Location: ../student-dashboard.php');
                 exit();
             }
             elseif($_SESSION['user_role'] === "t"){
                 $_SESSION['user_id'] = $row['teacher_id'];
-                header('Location: dashboard.php');
+                header('Location: ../dashboard.php');
                 exit();
             }
         }
     }
 }
 // Redirect back to login.php with an error message
-header("Location: login.php?error=info_mismatch");
+header("Location: ../login.php?error=info_mismatch");
 exit();
 ?>

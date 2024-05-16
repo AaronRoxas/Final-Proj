@@ -14,7 +14,7 @@ $sql = "SELECT 's' AS role FROM students WHERE email='$user_Email'
         SELECT 't' AS role FROM teachers WHERE email='$user_Email'";
 $result = mysqli_query($conn, $sql);
 if($result && mysqli_num_rows($result) > 0){
-    header('Location:registration.php?error=user_exists');
+    header('Location:../registration.php?error=user_exists');
     exit;
 }
 
@@ -32,7 +32,7 @@ if(verifyPass($user_Pass,$passVerification)){
                         echo "New record created successfully";
                         $registered = true;
                         // Redirect to the dashboard page
-                        header('Location:login.php?userCreated=true');
+                        header('Location:../login.php?userCreated=true');
                     } else {
                         // Display error message if the query fails
                         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -53,7 +53,7 @@ if(verifyPass($user_Pass,$passVerification)){
                         echo "New record created successfully";
                         $registered = true;
                         // Redirect to the dashboard page
-                        header('Location:login.php?userCreated=true');
+                        header('Location:../login.php?userCreated=true');
                     } else {
                         // Display error message if the query fails
                         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -66,7 +66,7 @@ if(verifyPass($user_Pass,$passVerification)){
             }
 } else {
     // Redirect back to the registration page with an error message
-    header('Location:registration.php?error=password_mismatch');
+    header('Location:../registration.php?error=password_mismatch');
     exit; // Stop further execution of script
 }
 ?>

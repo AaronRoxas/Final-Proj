@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body class="sign-up-body">
     <nav>
@@ -22,7 +22,7 @@
     <div class="sign-up-container">
             <div class="sign-up-box">
                 <h2>Login</h2>
-                <form action="login-validate.php" method="post">
+                <form action="scripts/login-validate.php" method="post">
         
                 <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
                 <div class="input-box"><input type="password" name="password" id="" placeholder="Enter Password" required></div>
