@@ -1,90 +1,125 @@
-*{
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #f4f4f4;
 }
-body{
-  font-family: 'Quicksand';
+
+header {
+  background-color: white;
+  color: black;
+  padding: 10px 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: -1px 2px 5px 0px rgba(173,173,173,1);
 }
-/* Sidebar Design */
-.sidebar{
+
+header .logo {
+  margin-left: 20px;
+  font-size: 1.5em;
+}
+
+header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+header nav ul li {
+  margin-right: 20px;
+}
+
+header nav ul li a {
+  color: #575757;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+header nav ul li a:hover {
+  text-decoration: underline;
+}
+
+main {
+  display: flex;
+  padding: 20px;
+}
+
+aside {
+  width: 200px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside ul li {
+  margin-bottom: 10px;
+}
+
+aside ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+aside ul li a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
+.content h2 {
+  margin-top: 0;
+}
+
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.content table, th, td {
+  border: 1px solid #ddd;
+}
+
+.content table th, .content table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.content button {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.content button:hover {
+  background-color: #575757;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
   background-color: #96BB7C;
-  width: 15%;
-  height: 100%;
+  color: #fff;
   position: absolute;
+  width: 100%;
   bottom: 0;
-}
-.sidebar li{
-  text-align: center;
-  padding: 15px;
-  margin: 15px;
-  list-style-type: none;
-}
-.sidebar a{
-  text-decoration: none;   
-  color: white;
-  display: block;
-}
-.sidebar li:hover{
-  background-color: #9AD173;
-  border-radius: 15px;
-  cursor: pointer;
-}
-.sidebar .active{
-  background-color: #9AD173;
-  border-radius: 15px;
-}
-
-.sidebar .bottom{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-/* Sidebar avatar */
-.profile {
-  display: flex; /* Use flexbox to align items in a row */
-  align-items: center; /* Center items vertically */
-  gap: 16px; /* Space between avatar and name */
-  padding:15px;
-  margin: 15px;
-}
-
-.avatar img{
-  border-radius: 50%; /* Make avatar circular */
-}
-.name {
-  font-size: 16px;
-  color: white;       
-  font-weight: 700;
-} 
-/* Logout Button Design */
-.logout-btn{
-  background-color: #CB5656;
-  border-radius: 8px;
-}
-.sidebar .logout-btn:hover{
-  background-color: #FF5656;
-  border-radius: 8px;
-}
-/* Select Class Design */
-.grid-container{
-  display: grid;
-  place-items: end;
-  grid-template-columns: repeat(3, 1fr); 
-
-  
-}
-.card{
-  border: 1px solid black;
-  background-color: #D9D9D9;
-  width: 300px;
-  height: 150px;
-  margin: 14px;
-  display: grid;
-  cursor: pointer;
-}
-.card p{
-  text-align: center;
-  place-self: end center;
-  padding-bottom: 10px;
 }
