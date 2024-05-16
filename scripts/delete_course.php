@@ -8,14 +8,14 @@
     $stmt->bind_param("s", $course_name);
 
     if ($stmt->execute()) {
-        header("Location: dashboard.php?message=course_deleted");
+        header("Location: ../dashboard.php?message=course_deleted");
     } else {
-        header("Location: dashboard.php?error=course_delete_failed");
+        header("Location: ../dashboard.php?error=course_delete_failed");
     }
     $stmt->close();
     $conn->close();
   } else {
-    header("Location: dashboard.php?error=invalid_request");
+    header("Location: ../dashboard.php?error=invalid_request");
   }
 
 ?>

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard</title>
-    <link rel="stylesheet" href="manage-style.css">
+    <link rel="stylesheet" href="styles/manage-style.css">
 </head>
 <body>
     <header>
         <div class="logo"><img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo"></div>
         <nav>
             <ul>
-                <li><a href="logout.php">Logout</a></li>
+                <li><a href="scripts/logout.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -25,14 +25,14 @@
         </aside>
         <section id="profile" class="content">
             <h2>Profile</h2>
-            <p>Name: <?php include 'functions.php'; if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
+            <p>Name: <?php include 'scripts/functions.php'; if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
             <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
             <p>Email: <?php echo $_SESSION['user_email']; ?></p>
         </section>
         <section id="courses" class="content">
             <h2>Courses</h2>
             <button onclick="showCourseForm()">Add Course</button>
-            <form id="courseForm" action="add_course.php" method="POST" style="display: none;">
+            <form id="courseForm" action="scripts/add_course.php" method="POST" style="display: none;">
                 <input type="text" name="course_name" placeholder="Course Name" required>
                 <input type="text" name="course_id" placeholder="Course ID" required>
                 <button type="submit">Add Course</button>
@@ -49,7 +49,7 @@
                     <?php
                     // Fetch courses from the database
                  
-                    include "db_conn.php";
+                    include "scripts/db_conn.php";
                     $teacher_id = $_SESSION['user_id'];
                     $stmt = $conn->prepare("SELECT course_id, course_name FROM courses WHERE teacher_id = ?");
                     $stmt->bind_param("i", $teacher_id);
@@ -60,9 +60,10 @@
                                 <td>{$row['course_name']}</td>
                                 <td>{$row['course_id']}</td>
                                 <td>
-                            <form action='delete_course.php' method='POST' style='display:inline;'>
+                            <form action='scripts/delete_course.php' method='POST' style='display:inline;'>
                                 <input type='hidden' name='course_name' value='{$row['course_name']}'>
-                                <button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button>
+
+                                <div class =\"delete\"><button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button><div>
                             </form>
                         </td>
                               </tr>";
@@ -96,7 +97,7 @@
                 <tbody id="studentList">
                     <?php
                     // Fetch students from the database
-                    $stmt = $conn->prepare("SELECT students.student_id, students.user_name, students.student_number, courses.course_name 
+                    $stmt = $conn->prepare("SELECT students.student_id, students.user_name, courses.course_name 
                                             FROM students 
                                             JOIN courses ON students.course_id = courses.course_id 
                                             WHERE courses.teacher_id = ?");
@@ -106,10 +107,8 @@
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>
                                 <td>{$row['user_name']}</td>
-                                <td>{$row['student_number']}</td>
                                 <td>{$row['course_name']}</td>
                                 <td>
-                                    <button onclick=\"editStudent({$row['student_id']})\">Edit</button>
                                     <button onclick=\"deleteStudent({$row['student_id']})\">Delete</button>
                                 </td>
                               </tr>";

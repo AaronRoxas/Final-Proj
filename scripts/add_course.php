@@ -1,5 +1,5 @@
 <?php
-include "db_conn.php";
+require "db_conn.php";
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -11,9 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssi", $course_id, $course_name, $teacher_id);
 
     if ($stmt->execute()) {
-        header("Location: dashboard.php?message=course_added");
+        header("Location: ../dashboard.php?message=course_added");
     } else {
-        header("Location: dashboard.php?error=course_add_failed");
+        header("Location: ../dashboard.php?error=course_add_failed");
     }
 
     $stmt->close();

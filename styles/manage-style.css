@@ -109,6 +109,19 @@ aside ul li a:hover {
   border-radius: 5px;
   cursor: pointer;
 }
+.delete button{
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background-color: #ce5252;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  place-items: center;
+}
+.delete button:hover{
+  background-color: #ce3e3e;
+}
 
 .content button:hover {
   background-color: #575757;
