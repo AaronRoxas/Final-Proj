@@ -26,8 +26,8 @@
                 <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
                 <div class="input-box"><select name="role" id="" required>
                     <option value="" disabled selected>Enter your role</option>
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
+                    <option value="s">Student</option>
+                    <option value="t">Teacher</option>
                 </select></div>
                 <div class="input-box"><input type="password" name="password" id="" placeholder="Create Password" required></div>
                 <div class="input-box"><input type="password" name="confirmPass" id="" placeholder="Confirm Password" required></div>
