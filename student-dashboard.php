@@ -112,7 +112,7 @@
         <section id="profile" class="card">
             <h2>Profile</h2>
             <p>Name: <?php session_start(); echo $_SESSION['username']; ?></p>
-            <p>Student ID: 2022-2-<?php echo $_SESSION['user_id']; ?></p>
+            <p>Student ID: S-<?php echo $_SESSION['user_id']; ?></p>
             <p>Email: <?php echo $_SESSION['user_email']; ?></p>
         </section>
         <section id="courses" class="card">
