@@ -46,5 +46,3 @@ if (isset($_POST['email'])) {
 header("Location: login.php?error=info_mismatch");
 exit();
 ?>
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
