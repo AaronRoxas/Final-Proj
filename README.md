@@ -55,4 +55,4 @@ This application is designed to streamline course and student management for edu
    - Use the teacher dashboard to add, update, or remove courses and students.
    - Students can view their courses and details through their dashboard.
 
-Explore the [repository](https://github.com/AaronRoxas/Final-Proj) for more information and start contributing to enhance this educational tool!
+Explore the [repository](https://github.com/AaronRoxas/Final-Proj) for more information.
