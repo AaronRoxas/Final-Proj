@@ -35,7 +35,7 @@ session_start();
             <p>Email: <?php echo $_SESSION['user_email']; ?></p>
         </section>
         <section id="courses" class="content">
-            <h2>Courses</h2>
+            <h2>Manage Courses</h2>
             <button onclick="showCourseForm()">Add Course</button>
             <form id="courseForm" action="scripts/add_course.php" method="POST" style="display: none;">
                 <input type="text" name="course_name" placeholder="Course Name" required>
@@ -135,7 +135,7 @@ session_start();
                             <form action='scripts/delete_student.php' method='POST' style='display:inline;'>
                                 <input type='hidden' name='student_id' value='{$row['user_name']}'>
                                 <input type='hidden' name='course_id' value='{$row['courses']}'>
-                                <button type='submit' name='submit' onclick='return confirm(\"Are you sure you want to remove this course from the student?\")'>Remove Course</button>
+                                <div class = 'delete'><button type='submit' name='submit' onclick='return confirm(\"Are you sure you want to remove this course from the student?\")'>Clear</button></div>
                             </form>
                         </td>
                       </tr>";

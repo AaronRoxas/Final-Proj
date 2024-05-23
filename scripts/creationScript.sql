@@ -16,10 +16,17 @@ CREATE TABLE courses (
 CREATE TABLE students (
     student_id INT PRIMARY KEY,
     user_name VARCHAR(100) NOT NULL,
-    student_number VARCHAR(20) NOT NULL UNIQUE,
-    course_id INT,
+    course_id varchar(255),
     email varchar(100) not null unique,
 	user_password VARCHAR(255) NOT NULL,
     user_role varchar(1),
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+CREATE TABLE student_courses (
+student_id INT,
+course_id varchar(255),
+PRIMARY KEY (student_id,course_id),
+foreign key(course_id)
+references courses(course_id)
 );

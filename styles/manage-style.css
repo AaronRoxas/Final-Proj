@@ -110,7 +110,8 @@ aside ul li a:hover {
   cursor: pointer;
 }
 .delete button{
-  margin-bottom: 10px;
+  margin: auto;
+  display: block;
   padding: 8px 12px;
   background-color: #ce5252;
   color: #fff;
