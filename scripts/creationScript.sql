@@ -3,11 +3,11 @@ CREATE TABLE teachers (
     user_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     user_password VARCHAR(255) NOT NULL,
-	user_role varchar(1)
+    user_role VARCHAR(1)
 );
 
 CREATE TABLE courses (
-    course_id varchar(255) PRIMARY KEY,
+    course_id VARCHAR(255) PRIMARY KEY,
     course_name VARCHAR(100) NOT NULL,
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
@@ -16,9 +16,15 @@ CREATE TABLE courses (
 CREATE TABLE students (
     student_id INT PRIMARY KEY,
     user_name VARCHAR(100) NOT NULL,
-    course_id varchar(255),
-    email varchar(100) not null unique,
-	user_password VARCHAR(255) NOT NULL,
-    user_role varchar(1),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    user_password VARCHAR(255) NOT NULL,
+    user_role VARCHAR(1)
+);
+
+CREATE TABLE student_courses (
+    student_id INT,
+    course_id VARCHAR(255),
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );

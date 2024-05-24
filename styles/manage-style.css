@@ -127,13 +127,3 @@ aside ul li a:hover {
 .content button:hover {
   background-color: #575757;
 }
-
-footer {
-  text-align: center;
-  padding: 10px 0;
-  background-color: #96BB7C;
-  color: #fff;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-}

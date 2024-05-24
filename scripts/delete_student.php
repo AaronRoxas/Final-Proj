@@ -1,7 +1,9 @@
 <?php
-  include "db_conn.php";
-  // Check if the form is submitted
-  if (isset($_POST['submit'])) {
+include "db_conn.php";
+session_start();
+
+// Check if the form is submitted
+if (isset($_POST['submit'])) {
     // Get the student ID and course ID from the form
     $student_id = $_POST['student_id'];
     $course_id = $_POST['course_id'];
@@ -12,7 +14,7 @@
     $stmt->bind_param("is", $student_id, $course_id);
 
     if ($stmt->execute()) {
-        echo "Course removed from student successfully.";
+        
         header("Location: ../dashboard.php");
     } else {
         echo "Error removing course from student: " . $stmt->error;
