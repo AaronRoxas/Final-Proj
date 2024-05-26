@@ -37,18 +37,17 @@ $stmt->close();
     </header>
     <main>
         <aside>
+            <h2>Profile</h2>
+            <p>Name: <?php echo $student['user_name']; ?></p>
+            <p>Student Number: S-<?php echo $student_id ?></p>
+            <p>Email: <?php echo $_SESSION['user_email']?></p>
             <ul>
                 <h2>Settings</h2>
                 <p><a href="#">Change Password</a></p>
                 <p><a href="#">Update Email</a></p>
             </ul>
         </aside>
-        <section id="profile" class="content">
-            <h2>Profile</h2>
-            <p>Name: <?php echo $student['user_name']; ?></p>
-            <p>Student Number: S-<?php echo $student_id ?></p>
-            <p>Email: <?php echo $_SESSION['user_email']?></p>
-        </section>
+
         <section id="courses" class="content">
             <h2>Courses</h2>
             <table>
@@ -79,6 +78,9 @@ $stmt->close();
                     ?>
                 </tbody>
             </table>
+        </section>
+        <section class="content">
+            <h2>Grades</h2>
         </section>
     </main>
 </body>

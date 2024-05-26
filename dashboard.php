@@ -23,17 +23,16 @@ session_start();
     <main>
         <aside>
             <ul>
+                <h2>Profile</h2>
+                <p>Name: <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
+                <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
+                <p>Email: <?php echo $_SESSION['user_email']; ?></p>
                 <h2>Settings</h2>
                 <p><a href="#">Change Password</a></p>
                 <p><a href="#">Update Email</a></p>
             </ul>
         </aside>
-        <section id="profile" class="content">
-            <h2>Profile</h2>
-            <p>Name: <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
-            <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
-            <p>Email: <?php echo $_SESSION['user_email']; ?></p>
-        </section>
+
         <section id="courses" class="content">
             <h2>Courses</h2>
             <button onclick="showCourseForm()">Add Course</button>
@@ -63,10 +62,14 @@ session_start();
                                 <td>{$row['course_name']}</td>
                                 <td>{$row['course_id']}</td>
                                 <td>
-                                   
-                                <div class =\"delete\"><button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button><div>
+                                <form action='scripts/delete_course.php' method='POST' style='display:inline;'>
+                                <input type='hidden' name='course_name' value='{$row['course_name']}'>
+                                <div class =\"delete\"><button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button></div>
+
+
                                 </td>
-                              </tr>";
+                              </tr>
+                              </form>";
                     }
                     $stmt->close();
                     ?>
@@ -128,7 +131,7 @@ session_start();
                         if ($currentStudentId !== $row['student_id']) {
                             if (!$firstRow) {
                                 echo "</td><td>
-                                        <form action='scripts/delete_student.php' method='POST' style='display:grid; place-items:center;'>
+                                        <form action='scripts/delete_student_course.php' method='POST' style='display:grid; place-items:center;'>
                                             <input type='hidden' name='student_id' value='$currentStudentId'>
                                             <input type='text' name='course_id' placeholder='Enter Course ID to remove'>
                                             <div class='delete' style='margin-top:7px;'><button type='submit' name='submit'>Remove</button></div>
@@ -147,7 +150,7 @@ session_start();
                     }
                     if ($currentStudentId !== null) {
                         echo "</td><td>
-                                <form action='scripts/delete_student.php' method='POST' style='display:grid; place-items:center;'>
+                                <form action='scripts/delete_student_course.php' method='POST' style='display:grid; place-items:center;'>
                                     <input type='hidden' name='student_id' value='$currentStudentId'>
                                     <input type='text' name='course_id' placeholder='Enter Course ID to remove' >
                                     <div class='delete' style='margin-top:7px;'><button type='submit' name='submit'>Remove</button></div>
