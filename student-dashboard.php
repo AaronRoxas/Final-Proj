@@ -81,6 +81,41 @@ $stmt->close();
         </section>
         <section class="content">
             <h2>Grades</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Prelim</th>
+                        <th>Midterm</th>
+                        <th>Finals</th>
+                        <th>Final Grade</th>
+                    </tr>
+                </thead>
+                <tbody id="gradeList">
+                    <?php
+                    // Fetch grades from the database
+                    $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade 
+                                            FROM grades g
+                                            JOIN students s ON g.student_id = s.student_id
+                                            JOIN courses c ON g.course_id = c.course_id
+                                            WHERE s.user_name = ?");
+                    $stmt->bind_param("s", $student['user_name']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['course_name']}</td>
+                                <td>{$row['prelim_grade']}</td>
+                                <td>{$row['midterm_grade']}</td>
+                                <td>{$row['final_grade']}</td>
+                                <td>{$row['overall_grade']}</td>
+                            </tr>";
+                    }
+                    $stmt->close();
+                    ?>
+                </tbody>
+
+            </table>
         </section>
     </main>
 </body>

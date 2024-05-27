@@ -127,3 +127,35 @@ aside ul li a:hover {
 .content button:hover {
   background-color: #575757;
 }
+
+.align-center{
+  display: grid;
+  place-items: center;
+}
+#changePasswordForm input[type=password]{
+width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}
+
+#changePasswordForm button{
+  text-align: center;
+  margin-top: 14px;
+}
+.returnBtn{
+display: block;
+
+width: 25%;
+text-align: center;
+}
+.returnBtn:hover{
+  cursor: pointer;
+}
+.returnBtn a{
+
+  text-decoration: none;
+}

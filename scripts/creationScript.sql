@@ -35,6 +35,7 @@ CREATE TABLE grades (
     prelim_grade FLOAT,
     midterm_grade FLOAT,
     final_grade FLOAT,
+    overall_grade FLOAT,
     FOREIGN KEY (student_id) REFERENCES students(student_id),
     FOREIGN KEY (course_id) REFERENCES courses(course_id),
     UNIQUE (student_id, course_id)

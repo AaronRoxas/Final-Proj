@@ -28,13 +28,15 @@ session_start();
                 <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
                 <p>Email: <?php echo $_SESSION['user_email']; ?></p>
                 <h2>Settings</h2>
-                <p><a href="#">Change Password</a></p>
-                <p><a href="#">Update Email</a></p>
+                <p><a href="change-settings.php">Change Password</a></p>
+                <p><a href="change-settings.php">Update Email</a></p>
+                
             </ul>
+                
         </aside>
-
+        <!-- Courses Section -->
         <section id="courses" class="content">
-            <h2>Courses</h2>
+            <h2>Courses Managed</h2>
             <button onclick="showCourseForm()">Add Course</button>
             <form id="courseForm" action="scripts/add_course.php" method="POST" style="display: none;">
                 <input type="text" name="course_name" placeholder="Course Name" required>
@@ -65,8 +67,6 @@ session_start();
                                 <form action='scripts/delete_course.php' method='POST' style='display:inline;'>
                                 <input type='hidden' name='course_name' value='{$row['course_name']}'>
                                 <div class =\"delete\"><button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button></div>
-
-
                                 </td>
                               </tr>
                               </form>";
@@ -76,6 +76,7 @@ session_start();
                 </tbody>
             </table>
         </section>
+        <!-- Assigning Students Section -->
         <section id="students" class="content">
             <h2>Students</h2>
             <button onclick="showStudentForm()">Assign Student to Course</button>
@@ -162,8 +163,80 @@ session_start();
                 </tbody>
             </table>
         </section>
-    </main>
-
+    
+        
+        <!-- GRADES SECTION  -->
+    <section id="grades" class="content">
+    <h2>Grades</h2>
+    <button onclick="showGradeForm()">Add Grades</button>
+    <form id="gradeForm" action="scripts/add_grade.php" method="POST" style="display: none;">
+        <select name="student_id" required>
+            <option value="">Select Student</option>
+            <?php
+            // Fetch students from the database
+            $stmt = $conn->prepare("SELECT student_id, user_name FROM students");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
+            }
+            $stmt->close();
+            ?>
+        </select>
+        <select name="course_id" required>
+            <option value="">Select Course</option>
+            <?php
+            // Fetch courses from the database
+            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
+            }
+            $stmt->close();
+            ?>
+        </select>
+        <input type="number" step="0.01" name="prelim_grade" placeholder="Prelim Grade" required>
+        <input type="number" step="0.01" name="midterm_grade" placeholder="Midterm Grade" required>
+        <input type="number" step="0.01" name="final_grade" placeholder="Final Grade" required>
+        <button type="submit">Add Grades</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Course</th>
+                <th>Prelim</th>
+                <th>Midterm</th>
+                <th>Final</th>
+                <th>Final Grade</th>
+            </tr>
+        </thead>
+        <tbody id="gradeList">
+            <?php
+            // Fetch grades from the database
+            $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade 
+                                    FROM grades g 
+                                    JOIN students s ON g.student_id = s.student_id 
+                                    JOIN courses c ON g.course_id = c.course_id");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['user_name']}</td>
+                        <td>{$row['course_name']}</td>
+                        <td>{$row['prelim_grade']}</td>
+                        <td>{$row['midterm_grade']}</td>
+                        <td>{$row['final_grade']}</td>
+                        <td>{$row['overall_grade']}</td>
+                      </tr>";
+            }
+            $stmt->close();
+            ?>
+        </tbody>
+    </table>
+</section>        
+</main>
     <script>
         function showCourseForm() {
             document.getElementById('courseForm').style.display = 'block';
@@ -172,6 +245,10 @@ session_start();
         function showStudentForm() {
             document.getElementById('studentForm').style.display = 'block';
         }
+        function showGradeForm() {
+            document.getElementById('gradeForm').style.display = 'block';
+        }
+
     </script>
 </body>
 </html>
