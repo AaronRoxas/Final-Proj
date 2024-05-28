@@ -14,7 +14,7 @@ if (isset($_POST['student_id'], $_POST['course_id'], $_POST['prelim_grade'], $_P
     $stmt->bind_param("issddd", $student_id, $course_id, $prelim_grade, $midterm_grade, $final_grade, $overall_grade);
 
     if ($stmt->execute()) {
-        echo "Grades added/updated successfully.";
+        printf("Grades added/updated successfully.") ;
         header("Location: ../dashboard.php");
     } else {
         echo "Error adding/updating grades: " . $stmt->error;

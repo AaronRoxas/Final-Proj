@@ -1,21 +1,34 @@
 <?php
-  include "db_conn.php";
-  if (isset($_POST['course_name'])) {
-    $course_name = $_POST['course_name'];
-    
-    // Prepare the SQL delete statement
-    $stmt = $conn->prepare("DELETE FROM courses WHERE course_name = ?");
-    $stmt->bind_param("s", $course_name);
+include "db_conn.php";
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $course_id = $_POST['course_id'];
+
+    // Delete from student_courses and grades where the course_id matches
+    $stmt = $conn->prepare("DELETE FROM student_courses WHERE course_id = ?");
+    $stmt->bind_param("s", $course_id);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $conn->prepare("DELETE FROM grades WHERE course_id = ?");
+    $stmt->bind_param("s", $course_id);
+    $stmt->execute();
+    $stmt->close();
+
+    // Delete the course
+    $stmt = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
+    $stmt->bind_param("s", $course_id);
 
     if ($stmt->execute()) {
-        header("Location: ../dashboard.php?message=course_deleted");
+        echo "Course deleted successfully.";
+        header("Location: ../dashboard.php");
     } else {
-        header("Location: ../dashboard.php?error=course_delete_failed");
+        echo "Error deleting course: " . $stmt->error;
     }
-    $stmt->close();
-    $conn->close();
-  } else {
-    header("Location: ../dashboard.php?error=invalid_request");
-  }
 
+    $stmt->close();
+}
+
+$conn->close();
 ?>

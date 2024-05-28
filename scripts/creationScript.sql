@@ -25,18 +25,18 @@ CREATE TABLE student_courses (
     student_id INT,
     course_id VARCHAR(255),
     PRIMARY KEY (student_id, course_id),
-    FOREIGN KEY (student_id) REFERENCES students(student_id),
-    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
+
 CREATE TABLE grades (
     grade_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     course_id VARCHAR(255),
-    prelim_grade FLOAT,
-    midterm_grade FLOAT,
-    final_grade FLOAT,
-    overall_grade FLOAT,
-    FOREIGN KEY (student_id) REFERENCES students(student_id),
-    FOREIGN KEY (course_id) REFERENCES courses(course_id),
-    UNIQUE (student_id, course_id)
+    prelim_grade DECIMAL(5, 2),
+    midterm_grade DECIMAL(5, 2),
+    final_grade DECIMAL(5, 2),
+    overall_grade DECIMAL(5, 2),
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
