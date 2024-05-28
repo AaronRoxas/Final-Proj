@@ -46,6 +46,7 @@ session_start();
                 <thead>
                     <tr>
                         <th>Course</th>
+                        <th>Course ID</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -60,10 +61,11 @@ session_start();
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>
                                 <td>{$row['course_name']}</td>
+                                <td>{$row['course_id']}</td>
                                 <td>
                                     <form action='scripts/delete_course.php' method='POST' style='display:inline;'>
                                         <input type='hidden' name='course_id' value='{$row['course_id']}'>
-                                        <button type='submit'>Delete</button>
+                                        <div class =\"delete\"><button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button></div>
                                     </form>
                                 </td>
                               </tr>";
@@ -137,7 +139,7 @@ session_start();
                                                 echo "<option value='$courseName'>$courseName</option>";
                                             }
                                         echo "</select>
-                                        <button type='submit'>Remove Course</button>
+                                        <div class =\"delete\"><button type='submit'>Remove Course</button></div>
                                     </form>
                                 </td>
                               </tr>";
