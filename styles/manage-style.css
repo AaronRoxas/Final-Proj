@@ -4,6 +4,11 @@ body {
   padding: 0;
   background-color: #f4f4f4;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 header {
   background-color: white;
@@ -128,12 +133,34 @@ aside ul li a:hover {
   background-color: #575757;
 }
 
-footer {
-  text-align: center;
-  padding: 10px 0;
-  background-color: #96BB7C;
-  color: #fff;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
+.align-center{
+  display: grid;
+  place-items: center;
 }
+#changePasswordForm input[type=password]{
+width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}
+
+#changePasswordForm button{
+  text-align: center;
+  margin-top: 14px;
+}
+.returnBtn{
+display: block;
+
+width: 25%;
+text-align: center;
+}
+.returnBtn:hover{
+  cursor: pointer;
+}
+.returnBtn a{
+  text-decoration: none;
+}
+
