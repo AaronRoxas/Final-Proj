@@ -12,6 +12,7 @@ session_start();
     <link rel="stylesheet" href="styles/manage-style.css">
 </head>
 <body>
+
     <header>
         <div class="logo"><img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo"></div>
         <nav>
@@ -22,20 +23,19 @@ session_start();
     </header>
     <main>
         <aside>
+            <h2>Profile</h2>
+            <p>Name: <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
+            <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
+            <p>Email: <?php echo $_SESSION['user_email']; ?></p>
             <ul>
                 <h2>Settings</h2>
                 <p><a href="#">Change Password</a></p>
                 <p><a href="#">Update Email</a></p>
             </ul>
         </aside>
-        <section id="profile" class="content">
-            <h2>Profile</h2>
-            <p>Name: <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
-            <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
-            <p>Email: <?php echo $_SESSION['user_email']; ?></p>
-        </section>
+
         <section id="courses" class="content">
-            <h2>Courses</h2>
+            <h2>Courses Managed</h2>
             <button onclick="showCourseForm()">Add Course</button>
             <form id="courseForm" action="scripts/add_course.php" method="POST" style="display: none;">
                 <input type="text" name="course_name" placeholder="Course Name" required>
@@ -76,79 +76,84 @@ session_start();
             </table>
         </section>
         <section id="students" class="content">
-            <h2>Students</h2>
-            <button onclick="showStudentForm()">Assign Student to Course</button>
-            <form id="studentForm" action="scripts/assign_student.php" method="POST" style="display: none;">
-                <select name="student_id" required>
-                    <option value="">Select Student</option>
-                    <?php
-                    // Fetch students from the database
-                    $stmt = $conn->prepare("SELECT student_id, user_name FROM students");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
-                    }
-                    $stmt->close();
-                    ?>
-                </select>
-                <select name="course_id" required>
-                    <option value="">Select Course</option>
-                    <?php
-                    // Fetch courses from the database
-                    $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
-                    }
-                    $stmt->close();
-                    ?>
-                </select>
-                <button type="submit">Assign Student</button>
-            </form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Courses</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="studentList">
-                    <?php
-                    // Fetch students and their courses from the database
-                    $stmt = $conn->prepare("SELECT s.student_id, s.user_name, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses 
-                                            FROM students s 
-                                            LEFT JOIN student_courses sc ON s.student_id = sc.student_id 
-                                            LEFT JOIN courses c ON sc.course_id = c.course_id 
-                                            GROUP BY s.student_id");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>
-                                <td>{$row['user_name']}</td>
-                                <td>{$row['courses']}</td>
-                                <td>
-                                    <form action='scripts/delete_student_course.php' method='POST' style='display:inline;'>
-                                        <input type='hidden' name='student_id' value='{$row['student_id']}'>
-                                        <select name='course_id' required>
-                                            <option value=''>Select Course to Remove</option>";
-                                            $courseArray = explode(', ', $row['courses']);
-                                            foreach ($courseArray as $courseName) {
-                                                echo "<option value='$courseName'>$courseName</option>";
-                                            }
-                                        echo "</select>
-                                        <div class =\"delete\"><button type='submit'>Remove Course</button></div>
-                                    </form>
-                                </td>
-                              </tr>";
-                    }
-                    $stmt->close();
-                    ?>
-                </tbody>
-            </table>
-        </section>
+    <h2>Students</h2>
+    <button onclick="showStudentForm()">Assign Student to Course</button>
+    <form id="studentForm" action="scripts/assign_student.php" method="POST" style="display: none;">
+        <select name="student_id" required>
+            <option value="">Select Student</option>
+            <?php
+            // Fetch students from the database
+            $stmt = $conn->prepare("SELECT student_id, user_name FROM students");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
+            }
+            $stmt->close();
+            ?>
+        </select>
+        <select name="course_id" required>
+            <option value="">Select Course</option>
+            <?php
+            // Fetch courses from the database
+            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
+            }
+            $stmt->close();
+            ?>
+        </select>
+        <button type="submit">Assign Student</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Courses</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentList">
+            <?php
+            // Fetch students and their courses from the database
+            $stmt = $conn->prepare("SELECT s.student_id, s.user_name, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses 
+                                    FROM students s 
+                                    LEFT JOIN student_courses sc ON s.student_id = sc.student_id 
+                                    LEFT JOIN courses c ON sc.course_id = c.course_id 
+                                    GROUP BY s.student_id");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['user_name']}</td>
+                        <td>{$row['courses']}</td>
+                        <td>
+                            <form action='scripts/delete_student_course.php' method='POST' style='display:inline;'>
+                                <input type='hidden' name='student_id' value='{$row['student_id']}'>
+                                <select name='course_id' required>
+                                    <option value=''>Select Course to Remove</option>";
+                                    $courseArray = explode(', ', $row['courses']);
+                                    foreach ($courseArray as $courseName) {
+                                        echo "<option value='$courseName'>$courseName</option>";
+                                    }
+                                echo "</select>
+                                <div class='delete'><button type='submit'>Remove Course</button></div>
+
+                           </form>
+                        </td>
+                      </tr>";
+            }
+            if(isset($_GET['error']) && $_GET['error'] == 'course_already_assigned'){
+                echo "<p style='color:Tomato;'>Course Already Assigned!</p>";
+            };
+            $stmt->close();
+            ?>
+        </tbody>
+    </table>
+</section>
+
        <!-- GRADES SECTION  -->
     <section id="grades" class="content">
     <h2>Grades</h2>
@@ -180,7 +185,7 @@ session_start();
             $stmt->close();
             ?>
         </select>
-        <input type="number" step="0.01" name="prelim_grade" placeholder="Prelim Grade" min="0" max="100" required >
+        <input type="number" step="0.01" name="prelim_grade" placeholder="Prelim Grade" min="0" max="100" inputmode="numeric"required >
         <input type="number" step="0.01" name="midterm_grade" placeholder="Midterm Grade" min="0" max="100" required>
         <input type="number" step="0.01" name="final_grade" placeholder="Final Grade" min="0" max="100"required>
         <button type="submit">Add Grades</button>
