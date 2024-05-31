@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("is", $student_id, $course_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result->num_rows > 0) {
         $stmt = $conn->prepare("INSERT INTO grades (student_id, course_id, prelim_grade, midterm_grade, final_grade, overall_grade)
         VALUES (?, ?, ?, ?, ?, ?)
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         final_grade = VALUES(final_grade), 
         overall_grade = VALUES(overall_grade)");
         $stmt->bind_param("isdddd", $student_id, $course_id, $prelim_grade, $midterm_grade, $final_grade, $overall_grade);
-    
+
         if ($stmt->execute()) {
             header("Location: ../dashboard.php?message=grade_added");
         } else {
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $conn->close();
     } else {
         header("Location: ../dashboard.php?error=course_not_assigned");
-    }
+}
    
 }
 ?>
