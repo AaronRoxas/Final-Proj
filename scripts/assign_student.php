@@ -5,7 +5,8 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = $_POST['student_id'];
     $course_id = $_POST['course_id'];
-
+    $_SESSION['course_id'] = $course_id;
+    $_SESSION['student_id'] = $student_id;
     // Check if the student is already assigned to the course
     $checkStmt = $conn->prepare("SELECT * FROM student_courses WHERE student_id = ? AND course_id = ?");
     $checkStmt->bind_param("is", $student_id, $course_id);

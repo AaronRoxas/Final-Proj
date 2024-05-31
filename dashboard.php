@@ -2,7 +2,6 @@
 include "scripts/db_conn.php";
 session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -153,10 +152,14 @@ session_start();
         </tbody>
     </table>
 </section>
-
        <!-- GRADES SECTION  -->
     <section id="grades" class="content">
     <h2>Grades</h2>
+    <?php
+    if(isset($_GET['error']) && $_GET['error'] == 'course_not_assigned'){
+        echo "<p style='color: red;'>Course is not assigned to student!</p>";
+    }
+    ?>
     <button onclick="showGradeForm()">Add Grades</button>
     <form id="gradeForm" action="scripts/add_grade.php" method="POST" style="display: none;">
         <select name="student_id" required>
@@ -188,7 +191,7 @@ session_start();
         <input type="number" step="0.01" name="prelim_grade" placeholder="Prelim Grade" min="0" max="100" inputmode="numeric"required >
         <input type="number" step="0.01" name="midterm_grade" placeholder="Midterm Grade" min="0" max="100" required>
         <input type="number" step="0.01" name="final_grade" placeholder="Final Grade" min="0" max="100"required>
-        <button type="submit">Add Grades</button>
+        <button type="submit" >Add Grades</button>
     </form>
     <table>
         <thead>
@@ -238,8 +241,10 @@ session_start();
         function showGradeForm() {
             document.getElementById('gradeForm').style.display = 'block';
         }
+        function hideGradeForm() {
+            document.getElementById('gradeForm').style.display = 'none';
+        }
 
     </script>
 </body>
 </html>
-

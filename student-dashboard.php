@@ -114,7 +114,6 @@ $stmt->close();
                     $stmt->close();
                     ?>
                 </tbody>
-
             </table>
         </section>
     </main>

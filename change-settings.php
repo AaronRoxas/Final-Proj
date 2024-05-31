@@ -31,9 +31,9 @@
                 <a href="dashboard.php">Return</a>
             </div>
         </aside>
+        
     <section id="changePassword" class="content">
     <h2>Change Password</h2>
-     
     <form id="changePasswordForm" action="scripts/change-pass.php" method="POST">
         <input type="password" name="current_password" placeholder="Current Password" required><br>
         <input type="password" name="new_password" placeholder="New Password" required><br>
@@ -47,8 +47,6 @@
         }?>
     </form>
     </section>
-
-
     <!-- <section id="changeEmail" class="content">
     <h2>Change Email</h2>
      
@@ -61,7 +59,5 @@
         </div>
     </form>
     </section> -->
-
-
 </body>
 </html>

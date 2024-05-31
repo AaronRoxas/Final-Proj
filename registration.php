@@ -40,13 +40,9 @@
                     if(isset($_GET['error']) && $_GET['error'] == 'user_exists'){
                         echo "<p style='color: red;'>Email already registered!</p>";
                     }
-                    
-                    
                 ?>
-            </form>
-            
+            </form>   
         </div>
     </div>
-
 </body>
 </html>
