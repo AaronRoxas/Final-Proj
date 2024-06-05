@@ -25,7 +25,6 @@ This application is designed to streamline course and student management for edu
    ```
 2. **Database Setup**:
    - Import the provided SQL scripts to set up your database.
-   - Update `db_conn.php` with your database credentials.
 
 3. **Configure Web Server**:
    - Ensure your web server points to the project directory.
@@ -52,7 +51,7 @@ This application is designed to streamline course and student management for edu
    - Register a new account or log in with existing credentials.
 
 2. **Manage Courses and Students**:
-   - Use the teacher dashboard to add, update, or remove courses and students.
-   - Students can view their courses and details through their dashboard.
+   - Use the teacher dashboard to assign, update, or remove courses to students.
+   - Students can view their courses and grades through their dashboard.
 
 Explore the [repository](https://github.com/AaronRoxas/Final-Proj) for more information.
