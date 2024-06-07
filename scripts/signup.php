@@ -1,7 +1,8 @@
 <?php
 include "functions.php";
 include "db_conn.php";
-$user_Name = $_POST["username"];
+$user_fName = $_POST["lname"];
+$user_lName = $_POST["fname"];
 $user_Email = $_POST["email"];
 $user_Pass = $_POST["password"];
 $user_Role = $_POST["role"];
@@ -25,8 +26,9 @@ if(verifyPass($user_Pass,$passVerification)){
                 if($user_Role == "t")
                 {
                     $teacherID = rand(9000,10000);
-                    $sql = "INSERT INTO teachers(teacher_id,user_name,email,user_password,user_role)
-                            VALUES ('$teacherID','$user_Name','$user_Email','$user_Pass','$user_Role')";
+                    $sql = "INSERT INTO teachers (teacher_id, user_fName, user_lName, user_name, email, user_password, user_role)
+                            VALUES ('$teacherID', '$user_fName', '$user_lName', CONCAT('$user_fName', ' ', '$user_lName'), '$user_Email', '$user_Pass', '$user_Role')";
+
                         // Execute the query
                     if (mysqli_query($conn, $sql)) {
                         echo "New record created successfully";
@@ -46,8 +48,8 @@ if(verifyPass($user_Pass,$passVerification)){
                 else if($user_Role == "s")
                 {
                     $studID = rand(2000,5000);
-                    $sql = "INSERT INTO students(student_id,user_name,email,user_password,user_role)
-                            VALUES ('$studID','$user_Name','$user_Email','$user_Pass','$user_Role')";
+                    $sql = "INSERT INTO students(student_id,user_fName,user_lName,user_name,email,user_password,user_role)
+                            VALUES ('$studID','$user_fName','$user_lName', CONCAT('$user_fName', ' ', '$user_lName'),'$user_Email','$user_Pass','$user_Role')";
                         // Execute the query
                     if (mysqli_query($conn, $sql)) {
                         echo "New record created successfully";

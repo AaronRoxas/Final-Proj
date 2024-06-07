@@ -25,7 +25,7 @@
                 <form action="scripts/login-validate.php" method="post">
         
                 <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
-                <div class="input-box"><input type="password" name="password" id="" placeholder="Enter Password" required></div>
+                <div class="input-box"><input type="password" name="password" id="" placeholder="Enter Password" autocomplete="on" required></div>
                 <div class="input-box button"><input type="submit" value="Login"></div>
                 <?php                    
                     if(isset($_GET['error']) && $_GET['error'] == 'info_mismatch'){

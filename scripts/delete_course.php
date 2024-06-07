@@ -21,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("s", $course_id);
 
     if ($stmt->execute()) {
-        echo "Course deleted successfully.";
-        header("Location: ../dashboard.php");
+        $_SESSION["remove_success"] = true;
+        header("Location: ../dashboard.php?message=course_removed");
     } else {
         echo "Error deleting course: " . $stmt->error;
     }

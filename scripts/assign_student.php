@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("is", $student_id, $course_id);
 
         if ($stmt->execute()) {
+           
             header("Location: ../dashboard.php?message=student_assigned");
         } else {
             header("Location: ../dashboard.php?error=student_assign_failed");

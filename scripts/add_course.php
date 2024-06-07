@@ -10,7 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $conn->prepare("INSERT INTO courses (course_id, course_name, teacher_id) VALUES (?, ?, ?)");
     $stmt->bind_param("ssi", $course_id, $course_name, $teacher_id);
 
-    if ($stmt->execute()) {
+    $checkStmt = $conn->prepare("SELECT * FROM courses WHERE course_id = ?");
+    $checkStmt->bind_param("s", $course_id);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+
+    if ($checkResult->num_rows > 0) {
+        // Student is already assigned to the course
+        header("Location: ../dashboard.php?error=course_already_exists");
+    }
+
+    else if ($stmt->execute()) {
         header("Location: ../dashboard.php?message=course_added");
     } else {
         header("Location: ../dashboard.php?error=course_add_failed");

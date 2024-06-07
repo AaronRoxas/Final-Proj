@@ -22,8 +22,10 @@
             <div class="sign-up-box" style="transition = 0.3s ease in;";>
                 <h2>Register</h2>
             <form action="scripts/signup.php" method="post">
-                <div class="input-box"><input type="text" name="username" id="" placeholder="Enter your Name" required></div>
-                <div class="input-box"><input type="email" name="email" id="" placeholder="Enter your Email" required></div>
+
+                <div class="input-box"><input type="text" name="fname" id="" placeholder="Enter First Name" required></div>
+                <div class="input-box"><input type="text" name="lname" id="" placeholder="Enter Last Name" required></div>
+                <div class="input-box"><input type="email" name="email" id="" placeholder="Enter Email" required></div>
                 <div class="input-box"><select name="role" id="" required>
                     <option value="" disabled selected>Enter your role</option>
                     <option value="s">Student</option>

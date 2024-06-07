@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Commit transaction
         $conn->commit();
-
+        $_SESSION["remove_success"] = true;
         header("Location: ../dashboard.php?message=course_removed");
     } catch (Exception $e) {
         // Rollback transaction on error
