@@ -1,0 +1,168 @@
+/* Scrollbar */
+
+::-webkit-scrollbar-track
+{
+
+	background-color: #e2e9e1;
+}
+
+::-webkit-scrollbar
+{
+	width: 15px;
+	background-color: #96c78c;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #89bb7e;
+	border-radius: 10px;
+}
+/* Landing page contents */
+.container{
+    padding-top: 150px;
+    padding-left: 194px;  
+}
+.contents h1{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 58px;
+    margin-bottom: 0;
+}
+.contents p {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    padding-top: 30px;
+    margin-bottom:103px;
+}
+
+.contents a{
+    text-decoration: none;
+}
+
+.sign-up{
+    background-color: #96BB7C;
+    padding: 18px 43px;
+    color: white;
+    border-radius: 12.5px;
+    margin-right: 25px;
+    margin-left: 0;
+}
+.sign-up:hover{
+    box-shadow: -5px 6px 8px -3px rgba(163,163,163,0.55);
+    transition: .15s ease-in;
+}
+.learn{
+    color: #96BB7C;
+    border: 1px solid #96BB7C;
+    padding: 18px 51px;
+    border-radius: 15px;
+}
+.learn:hover{
+    box-shadow: 7px 9px 8px -3px rgba(163,163,163,0.55);
+    transition: .15s ease-in;
+}
+#landing-img{
+    float: right;
+    padding-right: 315px;
+    margin-top: -400px;
+    position: sticky;
+    top: 100%;
+}
+
+.slide-in {
+    animation: slideIn 1s forwards;
+    opacity: 0;
+    transform: translateX(100%);
+    animation-delay: .2s;
+}
+@keyframes slideIn 
+{
+100% {
+    opacity: 1;
+    transform: translateX(0);
+}
+}
+.slide-in-top{
+    animation: slideIn 1s forwards;
+    opacity: 0;
+    transform: translateY(-100%);
+    animation-delay: .2s;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: #2ecc71;
+}
+
+.about-container {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 1200px;
+
+}
+
+/* Menu */
+
+/* Body */
+.about-hero {
+    background: #8fba82;
+    color: white;
+    padding: 60px 0;
+    margin-top: 40vh;
+    text-align: center;
+
+}
+
+.about-hero h1 {
+    font-size: 36px;
+    margin: 0;
+}
+
+.about-hero p {
+    font-size: 18px;
+    margin: 20px 0 0;
+}
+
+.about-content {
+    padding: 60px 0;
+    background-color:#f8f8f8;
+}
+
+.about-content h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.about-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.about-content ul {
+    margin-bottom: 40px;
+}
+
+.about-content ul li {
+    margin-bottom: 10px;
+}
+
+.about-content ul li strong {
+    color: #8fba82;
+}
+
+/* Footer */
+footer {
+    background: #8fba82;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    color: whitesmoke;
+    border-top: 1px solid #e7e7e7;
+}

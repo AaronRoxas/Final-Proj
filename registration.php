@@ -10,7 +10,7 @@
     <nav>
     <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo">
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+        <a href="index.html#about">About</a>
         <a href="">Contact</a>
         <div class="right-nav">
             <a href="login.php">Login</a>

@@ -139,6 +139,16 @@ aside ul li a:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#student-list{
+    flex-grow: 1;
+    margin-left: 20px; /* Adjust margin as needed */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
 .welcome-message {
   margin-bottom: 20px;
 }
@@ -239,7 +249,7 @@ aside ul li a:hover {
 button {
   margin-bottom: 10px;
   padding: 8px 12px;
-  background-color: #333;
+  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -392,4 +402,18 @@ form .input-box select  {
     border: none;
     background: #96BB7C;
     cursor: pointer;
+}
+
+.input-box-table {
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* Styling the select box */
+.input-box-table select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }

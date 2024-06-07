@@ -2,12 +2,14 @@
 var addGradeModal = document.getElementById('addGradeModal');
 var addStudentModal = document.getElementById('addStudentModal');
 var addCourseModal = document.getElementById('addCourseModal');
+var assignToAllModal = document.getElementById('assignToAllModal');
 
 
 
 // Get the buttons that open the modals
 var addGradeBtn = document.getElementById('addGradeBtn');
 var addStudentBtn = document.getElementById('addStudentBtn');
+var assignToAllBtn = document.getElementById('assignToAllBtn');
 var addCourseBtn = document.getElementById('addCourseBtn');
 var dashboardBtn = document.getElementById('dashboardBtn');
 var viewCourseListBtn = document.getElementById('viewCourseListBtn');
@@ -18,6 +20,7 @@ var viewGradeListBtn = document.getElementById('viewGradeListBtn');
 var gradeSpan = document.getElementsByClassName('close')[0];
 var studentSpan = document.getElementsByClassName('close')[1];
 var courseSpan = document.getElementsByClassName('close')[2];
+var assignSpan = document.getElementsByClassName('close')[3];
 
 
 
@@ -38,6 +41,9 @@ addStudentBtn.onclick = function() {
 
 addCourseBtn.onclick = function() {
     addCourseModal.style.display = "block";
+}
+assignToAllBtn.onclick = function() {
+    assignToAllModal.style.display = "block";
 }
 
 
@@ -78,6 +84,9 @@ studentSpan.onclick = function() {
 courseSpan.onclick = function() {
     addCourseModal.style.display = "none";
 }
+assignSpan.onclick = function() {
+    assignToAllModal.style.display = "none";
+}
 
 
 // When the user clicks anywhere outside of the modal, close it
@@ -88,6 +97,8 @@ window.onclick = function(event) {
         addStudentModal.style.display = "none";
     } else if (event.target == addCourseModal) {
         addCourseModal.style.display = "none";
+    } else if (event.target == assignToAllModal) {
+        assignToAllModal.style.display = "none";
     }
 }
 
@@ -109,4 +120,49 @@ function showRemoveAlert() {
     setTimeout(function() {
         alert.style.display = 'none';
     }, 3000);
+}
+
+
+// Pagination Section
+let currentPage = 1;
+const recordsPerPage = 10;
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadStudents(currentPage);
+
+    document.getElementById("prevPage").addEventListener("click", function() {
+        if (currentPage > 1) {
+            currentPage--;
+            loadStudents(currentPage);
+        }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", function() {
+        currentPage++;
+        loadStudents(currentPage);
+    });
+});
+
+function loadStudents(page) {
+    fetch(`get_students.php?page=${page}`)
+        .then(response => response.json())
+        .then(students => {
+            const tableBody = document.querySelector("table tbody");
+            tableBody.innerHTML = "";
+
+            students.forEach(student => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${student.section}</td>
+                    <td>${student.name}</td>
+                    <td contenteditable="true">${student.prelim}</td>
+                    <td contenteditable="true">${student.midterm}</td>
+                    <td contenteditable="true">${student.finals}</td>
+                    <td>${student.final}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        });
 }

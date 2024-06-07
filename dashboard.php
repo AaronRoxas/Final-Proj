@@ -23,7 +23,7 @@ session_start();
     </header>
     <!-- POPUP ALERTS -->
     <?php
-       if ((isset($_GET['message']) && $_GET['message'] == 'student_assigned') ||  (isset($_GET['message']) && $_GET['message'] == 'course_added')) {
+       if ((isset($_GET['message']) && $_GET['message'] == 'student_assigned') ||  (isset($_GET['message']) && $_GET['message'] == 'course_added') ||  (isset($_GET['message']) && $_GET['message'] == 'all_students_assigned')) {
             echo "
             <script>
                 window.onload = function() {
@@ -32,7 +32,7 @@ session_start();
             </script>";
             }
    
-        if(isset($_GET['message']) && $_GET['message'] == 'course_removed'){
+        if(isset($_GET['message']) && $_GET['message'] == 'course_removed' ||  (isset($_GET['error']) && $_GET['error'] == 'no_students_found')){
             echo "
             <script>
                 window.onload = function() {
@@ -74,7 +74,7 @@ session_start();
 
     <div class="dashboard-content" id="dashboard">
     <div class="welcome-message">
-        <h2>Welcome, admin!</h2>
+        <h2>Welcome,  <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; }?>!</h2>
         <p>Here's what's happening today:</p>
     </div>
     <div class="quick-stats">
@@ -221,7 +221,7 @@ session_start();
 
      <!-- View Student List Section -->
         <section class="dashboard-content" id="student-list">
-                <h2>Students<button onclick="addStudentBtn()" id="addStudentBtn" style="float:right;">Assign Student to Subject</button></h2>
+                <h2>Students<button onclick="addStudentBtn()" id="addStudentBtn" style="float:right;">Assign Student to Subject</button> <button  onclick="assignToAllBtn()" id="assignToAllBtn" style="float:right; margin-right:4px;">Assign All Students to a Subject</button></h2>
                 <table>
                     <thead>
                         <tr>
@@ -233,11 +233,12 @@ session_start();
                     <tbody id="studentList">
                         <?php
                         // Fetch students and their courses from the database
-                        $stmt = $conn->prepare("SELECT s.student_id, s.user_name, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses 
+                        $stmt = $conn->prepare("SELECT s.student_id, s.user_lName, s.user_name, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses 
                                                 FROM students s 
                                                 LEFT JOIN student_courses sc ON s.student_id = sc.student_id 
                                                 LEFT JOIN courses c ON sc.course_id = c.course_id 
-                                                GROUP BY s.student_id");
+                                                GROUP BY s.student_id
+                                                ORDER BY s.user_lName ASC");
                         $stmt->execute();
                         $result = $stmt->get_result();
                         while ($row = $result->fetch_assoc()) {
@@ -247,13 +248,13 @@ session_start();
                                     <td>
                                         <form action='scripts/delete_student_course.php' method='POST' style='display:inline;'>
                                             <input type='hidden' name='student_id' value='{$row['student_id']}'>
-                                            <select name='course_id' required>
+                                            <div class='input-box-table'><select name='course_id' required>
                                                 <option value=''>Select Course to Remove</option>";
                                                 $courseArray = explode(', ', $row['courses']);
                                                 foreach ($courseArray as $courseName) {
                                                     echo "<option value='$courseName'>$courseName</option>";
                                                 }
-                                            echo "</select>
+                                            echo "</select></div>
                                             <div class='delete'><button type='submit'>Remove Course</button></div>
 
                                     </form>
@@ -267,6 +268,7 @@ session_start();
                         ?>
                     </tbody>
                 </table>
+                
             </section>
 
     
@@ -282,7 +284,7 @@ session_start();
                 <option value="">Select Student</option>
                 <?php
                 // Fetch students from the database
-                $stmt = $conn->prepare("SELECT student_id, user_name FROM students");
+                $stmt = $conn->prepare("SELECT student_id, user_name FROM students  ORDER BY user_lName ASC");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 while ($row = $result->fetch_assoc()) {
@@ -326,7 +328,7 @@ session_start();
             <option value="">Select Student</option>
             <?php
             // Fetch students from the database
-            $stmt = $conn->prepare("SELECT student_id, user_name FROM students");
+            $stmt = $conn->prepare("SELECT student_id, user_name FROM students ORDER BY user_lName ASC");
             $stmt->execute();
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {
@@ -369,7 +371,33 @@ session_start();
             
         </form>
     </div>
-</div> 
+</div>
+
+<div class="modal" id="assignToAllModal">
+    <div class="modal-content">
+    <span class="close">&times;</span>
+        <h2>Assign Students</h2>
+        <form id="studentForm" action="scripts/assign_all_students.php" method="POST">
+        <div class="input-box">
+            <select name="course_id" required>
+            <option value="" disabled selected>Select Course</option>
+            <?php
+            // Fetch courses from the database
+            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
+            }
+            $stmt->close();
+            ?>
+        </select>
+        </div>
+
+        <div class="input-box"><input type="submit" value="Assign Students" id="button"></div>
+        </form>
+    </div>
+</div>
 </main>
 
 <script src="script.js"></script>
