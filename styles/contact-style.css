@@ -1,0 +1,142 @@
+/* Scrollbar */
+
+::-webkit-scrollbar-track
+{
+
+	background-color: #e2e9e1;
+}
+
+::-webkit-scrollbar
+{
+	width: 15px;
+	background-color: #96c78c;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #89bb7e;
+	border-radius: 10px;
+}
+/* General */
+body {
+    font-family: 'Century Gothic', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: #2ecc71;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* Menu */
+ul {
+    list-style: none;
+    padding: 0;
+	float: left;
+	margin-top: -30px;
+	margin-left: 230px;
+}
+
+/* Header &  Login/Sign Up */
+/*
+Nav Section
+*/
+.active{
+    text-decoration: underline;
+}
+nav{
+    overflow: hidden;
+    padding-left: 187px;
+    padding-right: 362px;
+    padding-top: 37px;
+}
+#logo{
+    display:block;
+    width: 123px;
+    height:50px;
+    float: left;
+}
+
+nav a{
+    float: left;
+    color: black;
+    text-align: center;
+    padding-top: 13px;
+    padding-left: 21px;
+    text-decoration: none;
+    font-size: 17px;
+}
+nav a:hover{
+    text-decoration: underline;
+}
+
+
+.right-nav{
+    float: right;   
+}
+
+#sign-up-btn{
+    background-color: #96BB7C;
+    color: whitesmoke;
+    border-radius: 10px;
+    padding: 13px 25px;
+    margin-left: 39px;
+}
+#sign-up-btn:hover{
+    background-color: #7cab5b;
+}
+
+
+/* Body: Contact */
+.contact-header h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+	text-align: center;
+	color: #8fba82;
+}
+.contact-hero {
+    background: #a7c09f;
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+	width: 80%;
+	margin-left: 20vh;
+    margin-bottom: 4vh;
+}
+
+.contact-hero h2 {
+    font-size: 28px;
+	margin-bottom: -15px;
+}
+
+.contact-hero p {
+    font-size: 18px;
+    margin: 10px 0 10px;
+}
+
+.contact-hero li {
+	list-style-type: none;
+}
+
+/* Footer */
+footer {
+    background: #8fba82;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    color: whitesmoke;
+    border-top: 1px solid #e7e7e7;
+}

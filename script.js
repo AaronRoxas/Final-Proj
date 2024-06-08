@@ -3,24 +3,26 @@ var addGradeModal = document.getElementById('addGradeModal');
 var addStudentModal = document.getElementById('addStudentModal');
 var addCourseModal = document.getElementById('addCourseModal');
 var assignToAllModal = document.getElementById('assignToAllModal');
-
+var viewGradeCoursesModal = document.getElementById('viewGradeCoursesModal');
 
 
 // Get the buttons that open the modals
 var addGradeBtn = document.getElementById('addGradeBtn');
+var viewGradeCoursesBtn = document.getElementById('viewGradeCoursesBtn');
 var addStudentBtn = document.getElementById('addStudentBtn');
 var assignToAllBtn = document.getElementById('assignToAllBtn');
 var addCourseBtn = document.getElementById('addCourseBtn');
 var dashboardBtn = document.getElementById('dashboardBtn');
 var viewCourseListBtn = document.getElementById('viewCourseListBtn');
 var viewStudentListBtn = document.getElementById('viewStudentListBtn');
-var viewGradeListBtn = document.getElementById('viewGradeListBtn');
+
 
 // Get the <span> elements that close the modals
 var gradeSpan = document.getElementsByClassName('close')[0];
 var studentSpan = document.getElementsByClassName('close')[1];
 var courseSpan = document.getElementsByClassName('close')[2];
 var assignSpan = document.getElementsByClassName('close')[3];
+var gradeCourseSpan = document.getElementsByClassName('close')[4];
 
 
 
@@ -45,16 +47,14 @@ addCourseBtn.onclick = function() {
 assignToAllBtn.onclick = function() {
     assignToAllModal.style.display = "block";
 }
+viewGradeCoursesBtn.onclick = function() {
+    viewGradeCoursesModal.style.display = "block";
+}
 
 
 
 //  Styles for grades section to pop
-viewGradeListBtn.onclick = function() {
-    viewGradeListPop.style.display = "block"; 
-    viewCourseListPop.style.display = "none"; 
-    viewStudentListPop.style.display = "none"; 
-    dashboard.style.display = "none"; 
-}
+
 viewCourseListBtn.onclick = function() {
     viewCourseListPop.style.display = "block"; 
     viewGradeListPop.style.display = "none"; 
@@ -71,7 +71,7 @@ dashboardBtn.onclick = function() {
     dashboard.style.display = "block"; 
     viewStudentListPop.style.display = "none"; 
     viewCourseListPop.style.display = "none"; 
-    viewGradeListPop.style.display = "none"; 
+    viewGradeListPop.style.display = "block"; 
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -87,6 +87,9 @@ courseSpan.onclick = function() {
 assignSpan.onclick = function() {
     assignToAllModal.style.display = "none";
 }
+gradeCourseSpan.onclick = function() {
+    viewGradeCoursesModal.style.display = "none";
+}
 
 
 // When the user clicks anywhere outside of the modal, close it
@@ -99,11 +102,22 @@ window.onclick = function(event) {
         addCourseModal.style.display = "none";
     } else if (event.target == assignToAllModal) {
         assignToAllModal.style.display = "none";
+    } else if (event.target == viewGradeCoursesModal) {
+        viewGradeCoursesModal.style.display = "none";
     }
 }
 
 function showSuccessAlert() {
     var alert = document.getElementById('successAlert');
+    alert.style.display = 'block';
+
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        alert.style.display = 'none';
+    }, 3000);
+}
+function passSuccessAlert() {
+    var alert = document.getElementById('passSuccessAlert');
     alert.style.display = 'block';
 
     // Hide the alert after 3 seconds
@@ -121,48 +135,22 @@ function showRemoveAlert() {
         alert.style.display = 'none';
     }, 3000);
 }
+function showNothingFoundAlert() {
+    var alert = document.getElementById('nothingAlert');
+    alert.style.display = 'block';
 
-
-// Pagination Section
-let currentPage = 1;
-const recordsPerPage = 10;
-
-document.addEventListener("DOMContentLoaded", function() {
-    loadStudents(currentPage);
-
-    document.getElementById("prevPage").addEventListener("click", function() {
-        if (currentPage > 1) {
-            currentPage--;
-            loadStudents(currentPage);
-        }
-    });
-
-    document.getElementById("nextPage").addEventListener("click", function() {
-        currentPage++;
-        loadStudents(currentPage);
-    });
-});
-
-function loadStudents(page) {
-    fetch(`get_students.php?page=${page}`)
-        .then(response => response.json())
-        .then(students => {
-            const tableBody = document.querySelector("table tbody");
-            tableBody.innerHTML = "";
-
-            students.forEach(student => {
-                const row = document.createElement("tr");
-
-                row.innerHTML = `
-                    <td>${student.section}</td>
-                    <td>${student.name}</td>
-                    <td contenteditable="true">${student.prelim}</td>
-                    <td contenteditable="true">${student.midterm}</td>
-                    <td contenteditable="true">${student.finals}</td>
-                    <td>${student.final}</td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-        });
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        alert.style.display = 'none';
+    }, 3000);
 }
+function showNoPermAlert() {
+    var alert = document.getElementById('noPermAlert');
+    alert.style.display = 'block';
+
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        alert.style.display = 'none';
+    }, 3000);
+}
+

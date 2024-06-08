@@ -12,9 +12,9 @@
     <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo">
         <a href="index.html">Home</a>
         <a href="index.html#about">About</a>
-        <a href="">Contact</a>
+        <a href="contact.html">Contact</a>
         <div class="right-nav">
-            <a href="">Login</a>
+            <a href="#">Login</a>
             <a href="registration.php" id="sign-up-btn">Sign up</a>
         </div>
     </nav>

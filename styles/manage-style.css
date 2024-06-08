@@ -1,3 +1,21 @@
+/* Scrollbar */
+::-webkit-scrollbar-track
+{
+
+	background-color: #e2e9e1;
+}
+
+::-webkit-scrollbar
+{
+	width: 15px;
+	background-color: #96c78c;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #89bb7e;
+	border-radius: 10px;
+}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -106,12 +124,24 @@ aside ul li a:hover {
   float: right;
 }
 
-.alert.success {
+.alert.success , .passSuccess {
   background-color: #4CAF50; /* Green */
 }
 .alert.remove {
   background-color: rgb(231, 34, 50);
   border-color: rgb(163, 13, 28);
+}
+.alert.nothing {
+  background-color: rgb(231, 34, 50);
+  border-color: rgb(163, 13, 28);
+}
+.alert.noPerm {
+  background-color: rgb(231, 34, 50);
+  border-color: rgb(163, 13, 28);
+}
+
+#grade{
+  display: block;
 }
 
 /* Close Button */

@@ -15,10 +15,18 @@
 Nav Section
 */
 nav{
+    
     overflow: hidden;
-    padding-left: 187px;
-    padding-right: 362px;
-    padding-top: 37px;
+    padding: 37px 250px;
+    margin-bottom: 14px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px 0px
+}
+.sticky{
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    background-color: white;
 }
 #logo{
     display:block;
@@ -141,18 +149,3 @@ form .input-box select {
     padding: 37px 250px ;
     margin-bottom: 14px;
   }
-  
-/* About Page Design */
-.active{
-    text-decoration: underline;
-}
-.about-wrapper{
-    border: 1px solid black;
-    margin-top: 12px;
-}
-.about-container{
-    padding: 14px;
-    
-    display: grid;
-    place-items: center;
-}

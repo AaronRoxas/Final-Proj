@@ -6,22 +6,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/style.css">
+
     <link rel="stylesheet" href="styles/about-style.css">
     <title>Home</title>
 </head>
 <body>
-    <nav>
+    <div id="home"></div>
+    <nav id="navbar" class="sticky">
         <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo">
-        <a href="#home" class="active">Home</a>
-        <a href="#about">About</a>
-        <a href="">Contact</a>
+        <a href="#top" class="active">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="contact.html">Contact</a>
         <div class="right-nav">
             <a href="login.php">Login</a>
             <a href="registration.php" id="sign-up-btn">Sign up</a>
         </div>
     </nav>
-    <div class="container" id="#home">
+
+    <div class="container">
         <div class="contents slide-in-top">
             <h1>Welcome to <span style="color: #96BB7C;">Student <br>Information System</span></h1>
             <p>Making it easier to use for everyone!</p>
@@ -31,9 +33,9 @@
         </div>
     </div>
 
-    <main>
-        <section class="about-hero" id="about">
-            <div class="about-container">
+    <main id="about">
+        <section class="about-hero" >
+            <div class="about-container" >
                 <h1>About Us</h1>
                 <p>Learn more about e-Node's Student Information System and how we empower educational institutions with innovative technology.</p>
             </div>
@@ -64,11 +66,14 @@
                 <p>At e-Node, we believe that education is the foundation of a better future. Our Student Information System is more than just a tool; it’s a partner in your educational journey. Join us and experience the difference that a powerful, user-friendly, and secure SIS can make.</p>
             </div>
         </section>
+
+        
     </main>
     <footer>
         <div class="about-container">
             <p>&copy; 2024 e-Node Company. All rights reserved.</p>
         </div>
     </footer>
+
 </body>
 </html>
