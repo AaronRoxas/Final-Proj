@@ -383,20 +383,16 @@ if (isset($_SESSION['grades'])) {
                     </select>
                 </div>
                 <div class="input-box">
-                    <select name="course_id" required>
-                        <option value="" disabled selected>Select Course</option>
-                        <?php
-                        // Fetch courses from the database
-                        $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
-                        }
-                        $stmt->close();
-                        ?>
-                    </select>
-                </div>
+                <select name="course_id" required>
+                    <!-- List courses managed by the logged-in teacher -->
+                    <option value="" disabled selected>Select Course</option>
+                    <?php
+                    foreach ($managed_courses as $course) {
+                        echo "<option value=\"{$course['course_id']}\">{$course['course_name']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
                 <div class="input-box">
                     <input type="number" name="prelim_grade" placeholder="Prelim Grade" required>
                 </div>
