@@ -27,7 +27,6 @@ session_start();
                 <p>Email: <?php echo $_SESSION['user_email']; ?></p>
                 <h2>Settings</h2>
                 <p><a href="#">Change Password</a></p>
-                <p><a href="#">Update Email</a></p>
                
             </ul>
             <div class="returnBtn">
@@ -43,6 +42,22 @@ session_start();
         <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
         <div class="align-center">
             <button type="submit">Change Password</button>
+        </div>
+        <?php
+        if(isset($_GET['error']) && $_GET['error'] == 'incorrect_pass'){
+            echo "<p style='color: red;'>Current password is incorrect.</p>";
+        }?>
+    </form>
+    </section>
+
+    <section id="changePassword" class="content">
+    <h2>Change Email</h2>
+    <form id="changePasswordForm" action="scripts/change-pass.php" method="POST">
+        <input type="email" name="current_email" placeholder="Current Email" required><br>
+        <input type="email" name="new_email" placeholder="New Email" required><br>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <div class="align-center">
+            <button type="submit">Change Email</button>
         </div>
         <?php
         if(isset($_GET['error']) && $_GET['error'] == 'incorrect_pass'){

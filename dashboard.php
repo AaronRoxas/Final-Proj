@@ -217,6 +217,7 @@ if (isset($_SESSION['grades'])) {
     <table>
         <thead>
             <tr>
+                <th>Faculty Name</th>
                 <th>Student Name</th>
                 <th>Course</th>
                 <th>Prelim</th>
@@ -229,8 +230,9 @@ if (isset($_SESSION['grades'])) {
             <?php
             if (isset($_POST['course_id'])) {
                 $course_id = $_POST['course_id'];
-                // Fetch grades from the database for the selected course
-                $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade 
+                // Fetch grades and professor's name from the database for the selected course
+                $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade, 
+                                            (SELECT t.user_name FROM courses c2 JOIN teachers t ON c2.teacher_id = t.teacher_id WHERE c2.course_id = g.course_id) AS professor
                                         FROM grades g 
                                         JOIN students s ON g.student_id = s.student_id 
                                         JOIN courses c ON g.course_id = c.course_id
@@ -240,21 +242,24 @@ if (isset($_SESSION['grades'])) {
                 $result = $stmt->get_result();
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
+                            <td>{$row['professor']}</td>
                             <td>{$row['user_name']}</td>
                             <td>{$row['course_name']}</td>
                             <td>{$row['prelim_grade']}</td>
                             <td>{$row['midterm_grade']}</td>
                             <td>{$row['final_grade']}</td>
                             <td>{$row['overall_grade']}</td>
-                          </tr>";
+                            
+                        </tr>";
                 }
                 $stmt->close();
             } else {
                 // Display a message if no course is selected
-                echo "<tr><td colspan='6'>Please select a course to view grades.</td></tr>";
+                echo "<tr><td colspan='7'>Please select a course to view grades.</td></tr>";
             }
             ?>
-        </tbody>
+</tbody>
+
     </table>
 </section>
 
@@ -262,6 +267,17 @@ if (isset($_SESSION['grades'])) {
 
 <!-- Courses Manage -->
 <section class="dashboard-content" id="course-list">
+    <?php
+        include ("scripts/db_conn.php");
+        // Fetch courses managed by the logged-in teacher
+        $teacher_id = $_SESSION['user_id'];
+        $stmt = $conn->prepare("SELECT course_id, course_name FROM courses WHERE teacher_id = ?");
+        $stmt->bind_param("i", $teacher_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $managed_courses = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+    ?>
     <h2>Courses Managed <button id="addCourseBtn" style="float: right;">Add Course</button></h2>
     <table class="content">
         <thead>
@@ -272,26 +288,19 @@ if (isset($_SESSION['grades'])) {
             </tr>
         </thead>
         <tbody id="courseList">
-            <?php
-            // Fetch courses from the database
-            $teacher_id = $_SESSION['user_id'];
-            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses WHERE teacher_id = ?");
-            $stmt->bind_param("i", $teacher_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
+        <?php
+            foreach ($managed_courses as $course) {
                 echo "<tr>
-                        <td>{$row['course_name']}</td>
-                        <td>{$row['course_id']}</td>
+                        <td>{$course['course_name']}</td>
+                        <td>{$course['course_id']}</td>
                         <td>
                             <form action='scripts/delete_course.php' method='POST' style='display:inline;'>
-                                <input type='hidden' name='course_id' value='{$row['course_id']}'>
+                                <input type='hidden' name='course_id' value='{$course['course_id']}'>
                                 <div class =\"delete\"><button type='submit' onclick='return confirm(\"Are you sure you want to delete this course?\")'>Delete</button></div>
                             </form>
                         </td>
                     </tr>";
-                }
-            $stmt->close();
+            }
             ?>
         </tbody>
     </table>
@@ -354,55 +363,55 @@ if (isset($_SESSION['grades'])) {
     
     <!-- Add Grade Modal -->
     <div id="addGradeModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Add Grade</h2>
-        <form action="scripts/add_grade.php" method="POST">
-    <div class="input-box">
-        <select name="student_id" required>
-            <option value="" disabled selected>Select Student</option>
-            <?php
-            // Fetch students from the database
-            $stmt = $conn->prepare("SELECT student_id, user_name FROM students");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
-            }
-            $stmt->close();
-            ?>
-        </select>
-    </div>
-    <div class="input-box">
-        <select name="course_id" required>
-            <option value="" disabled selected>Select Course</option>
-            <?php
-            // Fetch courses from the database
-            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
-            }
-            $stmt->close();
-            ?>
-        </select>
-    </div>
-    <div class="input-box">
-        <input type="number" name="prelim_grade" placeholder="Prelim Grade" required>
-    </div>
-    <div class="input-box">
-        <input type="number" name="midterm_grade" placeholder="Midterm Grade" required>
-    </div>
-    <div class="input-box">
-        <input type="number" name="final_grade" placeholder="Final Grade" required>
-    </div>
-    <div class="input-box">
-        <input type="submit" value="Add Grade">
-    </div>
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Grade</h2>
+            <form action="scripts/add_grade.php" method="POST">
+                <div class="input-box">
+                    <select name="student_id" required>
+                        <option value="" disabled selected>Select Student</option>
+                        <?php
+                        // Fetch students from the database
+                        $stmt = $conn->prepare("SELECT student_id, user_name FROM students ORDER BY user_lName ASC");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
+                        }
+                        $stmt->close();
+                        ?>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <select name="course_id" required>
+                        <option value="" disabled selected>Select Course</option>
+                        <?php
+                        // Fetch courses from the database
+                        $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
+                        }
+                        $stmt->close();
+                        ?>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <input type="number" name="prelim_grade" placeholder="Prelim Grade" required>
+                </div>
+                <div class="input-box">
+                    <input type="number" name="midterm_grade" placeholder="Midterm Grade" required>
+                </div>
+                <div class="input-box">
+                    <input type="number" name="final_grade" placeholder="Final Grade" required>
+                </div>
+                <div class="input-box">
+                    <input type="submit" value="Add Grade" id="button">
+                </div>
 </form>
 
-    </div>
+</div>
 </div>
 
 <!-- Add Student Modal -->
@@ -410,39 +419,34 @@ if (isset($_SESSION['grades'])) {
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Add Student</h2>
-        <form id="studentForm" action="scripts/assign_student.php" method="POST">
-        <div class="input-box">
-            <select name="student_id" required>
-            <option value="">Select Student</option>
-            <?php
-            // Fetch students from the database
-            $stmt = $conn->prepare("SELECT student_id, user_name FROM students ORDER BY user_lName ASC");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
-            }
-            $stmt->close();
-            ?>
-        </select>
-        </div>
-        <div class="input-box">
-            <select name="course_id" required>
-            <option value="" disabled selected>Select Course</option>
-            <?php
-            // Fetch courses from the database
-            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
-            }
-            $stmt->close();
-            ?>
-        </select>
-        </div>
-
-        <div class="input-box"><input type="submit" value="Assign Student" id="button"></div>
+        <form action="scripts/assign_student.php" method="POST">
+            <div class="input-box">
+                <label for="student_id">Student:</label>
+                <select name="student_id" required>
+                    <!-- Fetch and list students from the database -->
+                    <?php
+                    $stmt = $conn->prepare("SELECT student_id, user_name FROM students ORDER BY user_lName ASC");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value=\"{$row['student_id']}\">{$row['user_name']}</option>";
+                    }
+                    $stmt->close();
+                    ?>
+                </select>
+            </div>
+            <div class="input-box">
+                <label for="course_id">Course:</label>
+                <select name="course_id" required>
+                    <!-- List courses managed by the logged-in teacher -->
+                    <?php
+                    foreach ($managed_courses as $course) {
+                        echo "<option value=\"{$course['course_id']}\">{$course['course_name']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="input-box"><input type="submit" value="Assign Course" id="button"></div>
         </form>
     </div>
 </div>
@@ -469,20 +473,16 @@ if (isset($_SESSION['grades'])) {
         <h2>Assign Students</h2>
         <form id="studentForm" action="scripts/assign_all_students.php" method="POST">
         <div class="input-box">
-            <select name="course_id" required>
-            <option value="" disabled selected>Select Course</option>
-            <?php
-            // Fetch courses from the database
-            $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
-            }
-            $stmt->close();
-            ?>
-        </select>
-        </div>
+                <label for="course_id">Course:</label>
+                <select name="course_id" required>
+                    <!-- List courses managed by the logged-in teacher -->
+                    <?php
+                    foreach ($managed_courses as $course) {
+                        echo "<option value=\"{$course['course_id']}\">{$course['course_name']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
 
         <div class="input-box"><input type="submit" value="Assign Students" id="button"></div>
         </form>
@@ -515,11 +515,6 @@ if (isset($_SESSION['grades'])) {
     </form>
     </div>
 </div>
-
-
-
-
-
 </main>
 
 <script src="script.js"></script>

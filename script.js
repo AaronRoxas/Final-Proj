@@ -114,7 +114,7 @@ function showSuccessAlert() {
     // Hide the alert after 3 seconds
     setTimeout(function() {
         alert.style.display = 'none';
-    }, 3000);
+    }, 2000);
 }
 function passSuccessAlert() {
     var alert = document.getElementById('passSuccessAlert');
@@ -123,7 +123,7 @@ function passSuccessAlert() {
     // Hide the alert after 3 seconds
     setTimeout(function() {
         alert.style.display = 'none';
-    }, 3000);
+    }, 2000);
 }
 
 function showRemoveAlert() {
@@ -133,7 +133,7 @@ function showRemoveAlert() {
     // Hide the alert after 3 seconds
     setTimeout(function() {
         alert.style.display = 'none';
-    }, 3000);
+    }, 2000);
 }
 function showNothingFoundAlert() {
     var alert = document.getElementById('nothingAlert');
@@ -142,7 +142,7 @@ function showNothingFoundAlert() {
     // Hide the alert after 3 seconds
     setTimeout(function() {
         alert.style.display = 'none';
-    }, 3000);
+    }, 2000);
 }
 function showNoPermAlert() {
     var alert = document.getElementById('noPermAlert');
@@ -151,6 +151,6 @@ function showNoPermAlert() {
     // Hide the alert after 3 seconds
     setTimeout(function() {
         alert.style.display = 'none';
-    }, 3000);
+    }, 2000);
 }
 
