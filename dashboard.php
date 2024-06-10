@@ -394,13 +394,13 @@ if (isset($_SESSION['grades'])) {
                 </select>
             </div>
                 <div class="input-box">
-                    <input type="number" name="prelim_grade" placeholder="Prelim Grade" required>
+                    <input type="number" name="prelim_grade" placeholder="Prelim Grade"min="0" max="100" required>
                 </div>
                 <div class="input-box">
-                    <input type="number" name="midterm_grade" placeholder="Midterm Grade" required>
+                    <input type="number" name="midterm_grade" placeholder="Midterm Grade"min="0" max="100" required>
                 </div>
                 <div class="input-box">
-                    <input type="number" name="final_grade" placeholder="Final Grade" required>
+                    <input type="number" name="final_grade" placeholder="Final Grade"min="0" max="100" required>
                 </div>
                 <div class="input-box">
                     <input type="submit" value="Add Grade" id="button">
