@@ -25,6 +25,13 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="styles/manage-style.css">
+    <link rel="icon" type="image/x-icon" href="asset/img/icon.png">
+    <style>
+        /* Hide the course list section initially */
+        #course-list-wrapper {
+            display: none;
+        }
+    </style>
 </head>
 <body id="stud-dash">
     <header>
@@ -38,12 +45,16 @@ $stmt->close();
     <main>
         <aside>
             <h2>Profile</h2>
-            <p>Name: <?php echo $student['user_name']; ?></p>
-            <p>Student Number: S-<?php echo $student_id ?></p>
-            <p>Email: <?php echo $_SESSION['user_email']?></p>
+            <p>Name: <?php echo isset($student['user_name']) ? htmlspecialchars($student['user_name']) : 'N/A'; ?></p>
+            <p>Student Number: S-<?php echo htmlspecialchars($student_id); ?></p>
+            <p>Email: <?php echo htmlspecialchars($_SESSION['user_email']); ?></p>
+
+            <h2>Quick Access</h2>
+            <button id="gradeList" class="sideBtn">Grade List</button><br>
+            <button id="viewCourseListBtn" class="sideBtn">Course List</button><br>
         </aside>
 
-        <section id="table-wrapper" class="content">
+        <section id="table-wrapper" class="content" style="margin-left: 50px;">
             <table class="fl-table">
                 <thead>
                     <tr>
@@ -102,6 +113,49 @@ $stmt->close();
                 </tbody>
             </table>
         </section>
+
+        <section id="course-list-wrapper" class="content" style="margin-left: 50px;">
+            <h2>Course List</h2>
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Professor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (isset($student['courses']) && $student['courses']) {
+                        $courses = explode(', ', $student['courses']);
+                        $course_ids = explode(', ', $student['course_ids']);
+                        $teachers = explode(', ', $student['teachers']);
+                        foreach ($courses as $index => $course) {
+                            echo "<tr>";
+                            echo "<td>{$course_ids[$index]}</td>";
+                            echo "<td>{$course}</td>";
+                            echo "<td>{$teachers[$index]}</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>No courses assigned.</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </section>
     </main>
+
+    <script>
+        document.getElementById('viewCourseListBtn').addEventListener('click', function() {
+            document.getElementById('table-wrapper').style.display = 'none';
+            document.getElementById('course-list-wrapper').style.display = 'block';
+        });
+
+        document.getElementById('gradeList').addEventListener('click', function() {
+            document.getElementById('table-wrapper').style.display = 'block';
+            document.getElementById('course-list-wrapper').style.display = 'none';
+        });
+    </script>
 </body>
 </html>

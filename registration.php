@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" type="image/x-icon" href="asset/img/icon.png">
 </head>
 <body class="sign-up-body">
     <nav>
     <img src="asset/img/enode-logo.png" alt="" width="123px" height="50px" id="logo">
         <a href="index.html">Home</a>
         <a href="index.html#about">About</a>
-        <a href="">Contact</a>
+        <a href="contact.html">Contact</a>
         <div class="right-nav">
             <a href="login.php">Login</a>
             <a href="registration.php" id="sign-up-btn">Sign up</a>
