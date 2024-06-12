@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2024 at 09:07 AM
+-- Generation Time: Jun 12, 2024 at 04:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `assigned_courses`
+--
+
+CREATE TABLE `assigned_courses` (
+  `id` int(11) NOT NULL,
+  `teacher_id` int(11) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `course_id` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `courses`
 --
 
@@ -39,9 +52,8 @@ CREATE TABLE `courses` (
 
 INSERT INTO `courses` (`course_id`, `course_name`, `teacher_id`) VALUES
 ('CSEL', 'CS Elective', 9684),
-('INFOMAN', 'Information Management', 9684),
-('RPH', 'PH History', 9684),
-('WH', 'World History', 9684);
+('MATH1', 'Mathematics', 9998),
+('SD', 'Software Development', 9998);
 
 -- --------------------------------------------------------
 
@@ -69,6 +81,16 @@ CREATE TABLE `grades` (
   `final_grade` decimal(5,2) DEFAULT NULL,
   `overall_grade` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `grades`
+--
+
+INSERT INTO `grades` (`grade_id`, `student_id`, `course_id`, `prelim_grade`, `midterm_grade`, `final_grade`, `overall_grade`) VALUES
+(7, 2001, 'SD', 99.00, 75.00, 89.00, 87.67),
+(8, 2008, 'SD', 99.00, 90.00, 90.00, 93.00),
+(12, 2922, 'SD', 100.00, 100.00, 85.00, 95.00),
+(20, 2922, 'CSEL', 99.00, 88.00, 99.00, 95.33);
 
 -- --------------------------------------------------------
 
@@ -130,8 +152,50 @@ CREATE TABLE `student_courses` (
 --
 
 INSERT INTO `student_courses` (`student_id`, `course_id`) VALUES
-(2922, 'INFOMAN'),
-(2922, 'RPH');
+(2001, 'CSEL'),
+(2001, 'SD'),
+(2002, 'CSEL'),
+(2002, 'SD'),
+(2003, 'CSEL'),
+(2003, 'SD'),
+(2004, 'CSEL'),
+(2004, 'SD'),
+(2005, 'CSEL'),
+(2005, 'SD'),
+(2006, 'CSEL'),
+(2006, 'SD'),
+(2007, 'CSEL'),
+(2007, 'SD'),
+(2008, 'CSEL'),
+(2008, 'SD'),
+(2009, 'CSEL'),
+(2009, 'SD'),
+(2010, 'CSEL'),
+(2010, 'SD'),
+(2011, 'CSEL'),
+(2011, 'SD'),
+(2012, 'CSEL'),
+(2012, 'SD'),
+(2013, 'CSEL'),
+(2013, 'SD'),
+(2014, 'CSEL'),
+(2014, 'SD'),
+(2015, 'CSEL'),
+(2015, 'SD'),
+(2016, 'CSEL'),
+(2016, 'SD'),
+(2017, 'CSEL'),
+(2017, 'SD'),
+(2018, 'CSEL'),
+(2018, 'SD'),
+(2019, 'CSEL'),
+(2019, 'SD'),
+(2020, 'CSEL'),
+(2020, 'SD'),
+(2922, 'CSEL'),
+(2922, 'SD'),
+(4106, 'CSEL'),
+(4106, 'SD');
 
 -- --------------------------------------------------------
 
@@ -162,6 +226,15 @@ INSERT INTO `teachers` (`teacher_id`, `user_fName`, `user_lName`, `user_name`, `
 --
 
 --
+-- Indexes for table `assigned_courses`
+--
+ALTER TABLE `assigned_courses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `course_id` (`course_id`);
+
+--
 -- Indexes for table `courses`
 --
 ALTER TABLE `courses`
@@ -179,7 +252,7 @@ ALTER TABLE `departments`
 --
 ALTER TABLE `grades`
   ADD PRIMARY KEY (`grade_id`),
-  ADD KEY `student_id` (`student_id`),
+  ADD UNIQUE KEY `unique_student_course` (`student_id`,`course_id`),
   ADD KEY `course_id` (`course_id`);
 
 --
@@ -208,6 +281,12 @@ ALTER TABLE `teachers`
 --
 
 --
+-- AUTO_INCREMENT for table `assigned_courses`
+--
+ALTER TABLE `assigned_courses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
@@ -217,11 +296,19 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `assigned_courses`
+--
+ALTER TABLE `assigned_courses`
+  ADD CONSTRAINT `assigned_courses_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`teacher_id`),
+  ADD CONSTRAINT `assigned_courses_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  ADD CONSTRAINT `assigned_courses_ibfk_3` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`);
 
 --
 -- Constraints for table `courses`

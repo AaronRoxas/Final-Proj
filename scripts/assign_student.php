@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         // The course is managed by the logged-in teacher, proceed with assignment
-        $stmt = $conn->prepare("INSERT INTO student_courses (student_id, course_id) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO student_courses (student_id, course_id) VALUES (?, ?)
+                                ON DUPLICATE KEY UPDATE course_id = VALUES(course_id)");
         $stmt->bind_param("is", $student_id, $course_id);
         if ($stmt->execute()) {
             header("Location: ../dashboard.php?message=student_assigned");

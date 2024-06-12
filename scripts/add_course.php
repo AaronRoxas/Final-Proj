@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $checkResult = $checkStmt->get_result();
 
     if ($checkResult->num_rows > 0) {
-        // Student is already assigned to the course
         header("Location: ../dashboard.php?error=course_already_exists");
     }
 

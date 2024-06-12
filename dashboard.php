@@ -192,12 +192,12 @@ if (isset($_SESSION['grades'])) {
         <h3>Upcoming Events</h3>
         <ul>
             <li>Final Exams - June 10 to June 14</li>
-            <li>Presentation- June 13</li>
+            <li>Presentation- June 15</li>
         </ul>
     </div>
     <div class="announcements">
         <h3>Announcements</h3>
-        <p>Summer break starts on June 15</p>
+        <p>Summer break starts on June 17</p>
     </div>
 </div>
 
