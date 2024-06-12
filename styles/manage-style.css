@@ -1,3 +1,21 @@
+/* Scrollbar */
+::-webkit-scrollbar-track
+{
+
+	background-color: #e2e9e1;
+}
+
+::-webkit-scrollbar
+{
+	width: 15px;
+	background-color: #96c78c;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #89bb7e;
+	border-radius: 10px;
+}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -106,12 +124,24 @@ aside ul li a:hover {
   float: right;
 }
 
-.alert.success {
+.alert.success , .passSuccess {
   background-color: #4CAF50; /* Green */
 }
 .alert.remove {
   background-color: rgb(231, 34, 50);
   border-color: rgb(163, 13, 28);
+}
+.alert.nothing {
+  background-color: rgb(231, 34, 50);
+  border-color: rgb(163, 13, 28);
+}
+.alert.noPerm {
+  background-color: rgb(231, 34, 50);
+  border-color: rgb(163, 13, 28);
+}
+
+#grade{
+  display: block;
 }
 
 /* Close Button */
@@ -138,6 +168,16 @@ aside ul li a:hover {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+#student-list{
+    flex-grow: 1;
+    margin-left: 20px; /* Adjust margin as needed */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 
 .welcome-message {
   margin-bottom: 20px;
@@ -239,7 +279,7 @@ aside ul li a:hover {
 button {
   margin-bottom: 10px;
   padding: 8px 12px;
-  background-color: #333;
+  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -393,3 +433,85 @@ form .input-box select  {
     background: #96BB7C;
     cursor: pointer;
 }
+
+.input-box-table {
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* Styling the select box */
+.input-box-table select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Table Styles */
+.table-wrapper {
+  margin: 10px 70px 70px;
+  
+}
+
+.fl-table {
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: normal;
+  border: none;
+  border-collapse: collapse;
+  width: 1200px; /* Set a fixed width for the table */
+  max-width: 100%;
+  white-space: nowrap;
+  background-color: white;
+}
+
+.fl-table td, .fl-table th {
+  text-align: center;
+  padding: 8px;
+  width: 200px; /* Set a fixed width for the table cells */
+}
+
+.fl-table td {
+  font-size: 12px;
+}
+
+.fl-table thead th {
+  color: #ffffff;
+  background: #4CAF50;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+  .fl-table {
+      width: 100%;
+      overflow-x: auto; /* Enable horizontal scrolling */
+  }
+
+  .fl-table td, .fl-table th {
+      padding: 10px;
+      width: auto; /* Allow content to dictate width */
+      white-space: nowrap; /* Prevent wrapping */
+  }
+
+  .fl-table thead {
+      display: block;
+      float: left;
+  }
+
+  .fl-table tbody {
+      display: block;
+      width: auto; /* Allow content to dictate width */
+      overflow-x: auto; /* Enable horizontal scrolling */
+  }
+
+  .fl-table tbody tr {
+      display: table-cell;
+  }
+
+  .fl-table thead, .fl-table tbody, .fl-table thead th {
+      display: block;
+  }
+}
+

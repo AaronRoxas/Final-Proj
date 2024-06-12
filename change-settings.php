@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,12 +22,11 @@
         <aside>
             <ul>
                 <h2>Profile</h2>
-                <p>Name: <?php session_start(); if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
+                <p>Name: <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; } ?></p>
                 <p>Teacher ID: T-<?php echo $_SESSION['user_id']; ?></p>
                 <p>Email: <?php echo $_SESSION['user_email']; ?></p>
                 <h2>Settings</h2>
                 <p><a href="#">Change Password</a></p>
-                <p><a href="#">Update Email</a></p>
                
             </ul>
             <div class="returnBtn">
@@ -47,17 +49,7 @@
         }?>
     </form>
     </section>
-    <!-- <section id="changeEmail" class="content">
-    <h2>Change Email</h2>
-     
-    <form id="changeEmailForm" action="scripts/change_pass.php" method="POST">
-        <input type="password" name="current_password" placeholder="Current Password" required><br>
-        <input type="password" name="new_password" placeholder="New Password" required><br>
-        <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
-        <div class="align-center">
-            <button type="submit">Change Password</button>
-        </div>
-    </form>
-    </section> -->
+
+    </section>
 </body>
 </html>
