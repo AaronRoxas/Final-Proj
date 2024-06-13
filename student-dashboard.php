@@ -52,6 +52,9 @@ $stmt->close();
             <h2>Quick Access</h2>
             <button id="gradeList" class="sideBtn">Grade List</button><br>
             <button id="viewCourseListBtn" class="sideBtn">Course List</button><br>
+
+            <h2>Settings</h2>
+            <button class="sideBtn" onclick="document.location='change-settings-stud.php'" >Change Password</button>
         </aside>
 
         <section id="table-wrapper" class="content" style="margin-left: 50px;">
