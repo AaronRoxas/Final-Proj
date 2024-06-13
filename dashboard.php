@@ -29,8 +29,21 @@ if (isset($_SESSION['grades'])) {
     if (isset($_GET['message'])) {
         switch ($_GET['message']) {
             case 'student_assigned':
-            case 'course_added':
             case 'all_students_assigned':
+                echo "
+                <script>
+                    window.onload = function() {
+                        showSuccessAlert();
+                    };
+                </script>
+                <style>
+                    #student-list{display:block}
+                    #course-list{display:none}
+                    #grade{display:none}
+                    #dashboard{display:none}
+                </style>
+                ";
+                break;
             case 'grade_added':
                 echo "
                 <script>
@@ -39,7 +52,21 @@ if (isset($_SESSION['grades'])) {
                     };
                 </script>";
                 break;
-            
+            case 'course_added':
+                echo "
+                <script>
+                    window.onload = function() {
+                        showSuccessAlert();
+                    };
+                </script>
+                <style>
+                    #student-list{display:none}
+                    #course-list{display:block}
+                    #grade{display:none}
+                    #dashboard{display:none}
+                </style>
+                ";
+                break;
             case 'pass_changed':
                 echo "
                 <script>
@@ -50,12 +77,7 @@ if (isset($_SESSION['grades'])) {
                 break;
     
             case 'course_removed':
-                echo "
-                <script>
-                    window.onload = function() {
-                        showRemoveAlert();
-                    };
-                </script>";
+                
                 break;
     
             case 'no_grades_found':
@@ -76,23 +98,35 @@ if (isset($_SESSION['grades'])) {
         }
     }
     
-    if (isset($_GET['error']) && $_GET['error'] == 'no_students_found') {
-        echo "
-        <script>
-            window.onload = function() {
-                showRemoveAlert();
-            };
-        </script>";
+    if (isset($_GET['error'])) {
+        switch ($_GET['error']) {
+            case 'no_students_found':
+                echo "
+                    <script>
+                        window.onload = function() {
+                            showRemoveAlert();
+                        };
+                    </script>";
+                break;
+            case 'course_already_exists':
+                echo '
+                <style>
+                    #student-list{display:none}
+                    #course-list{display:block}
+                    #grade{display:none}
+                    #dashboard{display:none}
+                </style>
+                <script>
+                 window.onload = function() {
+                            showAlreadyExistAlert();
+                        };
+                </script>
+                ';
+        }
+        
     }
-    if (isset($_GET["page"])) {
-        echo"
-        <script>
-            viewStudentListPop.style.display = 'block'; 
-            viewCourseListPop.style.display = 'none'; 
-            viewGradeListPop.style.display = 'none'; 
-            dashboard.style.display = 'none'; 
-        </script>";
-    }
+
+
 
     
     ?>    
@@ -118,6 +152,10 @@ if (isset($_SESSION['grades'])) {
 
     <div class="alert noPerm" id="noPermAlert">
         You do not have permission for this!
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
+    <div class="alert alreadyExist" id="alreadyExistAlert">
+        This course already exists!
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     </div>
 <!-- End of Alert contents -->
@@ -411,12 +449,18 @@ if (isset($_SESSION['grades'])) {
                             <div class="pagination" id="pagination">
                                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                                     <a href="?page=<?php echo $i; ?>" <?php if ($i == $page) echo 'class="active"'; ?>><?php echo $i; ?></a>
-                                <?php endfor; ?>
+                                <?php endfor;
+                                    if (isset($_GET["page"]) && $_GET["page"] >= 1 && $_GET["page"] <= $total_pages) {
+                                        echo "
+                                        <style>
+                                            #student-list{display:block}
+                                            #course-list{display:none}
+                                            #grade{display:none}
+                                            #dashboard{display:none}
+                                        </style>";
+                                    } ?>
                             </div>
             </section>
-
-    
-    
     <!-- Add Grade Modal -->
     <div id="addGradeModal" class="modal">
         <div class="modal-content">

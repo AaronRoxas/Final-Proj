@@ -153,4 +153,13 @@ function showNoPermAlert() {
         alert.style.display = 'none';
     }, 2000);
 }
+function showAlreadyExistAlert() {
+    var alert = document.getElementById('alreadyExistAlert');
+    alert.style.display = 'block';
+
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        alert.style.display = 'none';
+    }, 2000);
+}
 

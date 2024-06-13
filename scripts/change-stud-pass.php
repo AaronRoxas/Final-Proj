@@ -28,10 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             }
 
-            // Update the password in the database
-            $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT); // Hash the new password
             $stmt = $conn->prepare("UPDATE students SET user_password = ? WHERE student_id = ?");
-            $stmt->bind_param("si", $new_password_hashed, $_SESSION['user_id']);
+            $stmt->bind_param("si", $new_password, $_SESSION['user_id']);
 
             if ($stmt->execute()) {
                 header("Location: ../student-dashboard.php?message=pass_changed");

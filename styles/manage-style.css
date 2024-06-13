@@ -139,6 +139,10 @@ aside ul li a:hover {
   background-color: rgb(231, 34, 50);
   border-color: rgb(163, 13, 28);
 }
+.alert.alreadyExist {
+  background-color: rgb(231, 34, 50);
+  border-color: rgb(163, 13, 28);
+}
 
 #grade{
   display: block;
