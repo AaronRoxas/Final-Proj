@@ -84,6 +84,15 @@ if (isset($_SESSION['grades'])) {
             };
         </script>";
     }
+    if (isset($_GET["page"])) {
+        echo"
+        <script>
+            viewStudentListPop.style.display = 'block'; 
+            viewCourseListPop.style.display = 'none'; 
+            viewGradeListPop.style.display = 'none'; 
+            dashboard.style.display = 'none'; 
+        </script>";
+    }
 
     
     ?>    
@@ -215,52 +224,77 @@ if (isset($_SESSION['grades'])) {
 
     <!-- Grades Table -->
     <table>
-        <thead>
-            <tr>
-                <th>Faculty Name</th>
-                <th>Student Name</th>
-                <th>Course</th>
-                <th>Prelim</th>
-                <th>Midterm</th>
-                <th>Final</th>
-                <th>Final Grade</th>
-            </tr>
-        </thead>
-        <tbody id="gradeList">
-            <?php
-            if (isset($_POST['course_id'])) {
-                $course_id = $_POST['course_id'];
-                // Fetch grades and professor's name from the database for the selected course
-                $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade, 
-                                            (SELECT t.user_name FROM courses c2 JOIN teachers t ON c2.teacher_id = t.teacher_id WHERE c2.course_id = g.course_id) AS professor
-                                        FROM grades g 
-                                        JOIN students s ON g.student_id = s.student_id 
-                                        JOIN courses c ON g.course_id = c.course_id
-                                        WHERE g.course_id = ?");
-                $stmt->bind_param("s", $course_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>{$row['professor']}</td>
-                            <td>{$row['user_name']}</td>
-                            <td>{$row['course_name']}</td>
-                            <td>{$row['prelim_grade']}</td>
-                            <td>{$row['midterm_grade']}</td>
-                            <td>{$row['final_grade']}</td>
-                            <td>{$row['overall_grade']}</td>
-                            
-                        </tr>";
-                }
-                $stmt->close();
-            } else {
-                // Display a message if no course is selected
-                echo "<tr><td colspan='7'>Please select a course to view grades.</td></tr>";
-            }
-            ?>
-</tbody>
+    <thead>
+        <tr>
+            <th>Faculty Name</th>
+            <th>Student Name</th>
+            <th>Course</th>
+            <th>Prelim</th>
+            <th>Midterm</th>
+            <th>Final</th>
+            <th>Final Grade</th>
+            <th>GPA</th>
+        </tr>
+    </thead>
+    <tbody id="gradeList">
+        <?php
+        if (isset($_POST['course_id'])) {
+            $course_id = $_POST['course_id'];
+            // Fetch grades and professor's name from the database for the selected course
+            $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade, 
+                                        (SELECT t.user_name FROM courses c2 JOIN teachers t ON c2.teacher_id = t.teacher_id WHERE c2.course_id = g.course_id) AS professor
+                                    FROM grades g 
+                                    JOIN students s ON g.student_id = s.student_id 
+                                    JOIN courses c ON g.course_id = c.course_id
+                                    WHERE g.course_id = ?");
+            $stmt->bind_param("s", $course_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['professor']}</td>
+                        <td>{$row['user_name']}</td>
+                        <td>{$row['course_name']}</td>
+                        <td>{$row['prelim_grade']}</td>
+                        <td>{$row['midterm_grade']}</td>
+                        <td>{$row['final_grade']}</td>
+                        <td>{$row['overall_grade']}</td>";
 
-    </table>
+                // GPA calculation based on overall_grade
+                $gpa = '';
+                if ($row['overall_grade'] >= 99) {
+                    $gpa = '1.00';
+                } elseif ($row['overall_grade'] >= 96) {
+                    $gpa = '1.25';
+                } elseif ($row['overall_grade'] >= 93) {
+                    $gpa = '1.50';
+                } elseif ($row['overall_grade'] >= 90) {
+                    $gpa = '1.75';
+                } elseif ($row['overall_grade'] >= 87) {
+                    $gpa = '2.00';
+                } elseif ($row['overall_grade'] >= 84) {
+                    $gpa = '2.25';
+                } elseif ($row['overall_grade'] >= 81) {
+                    $gpa = '2.50';
+                } elseif ($row['overall_grade'] >= 78) {
+                    $gpa = '2.75';
+                } elseif ($row['overall_grade'] >= 75) {
+                    $gpa = '3.00';
+                } else {
+                    $gpa = '5.00';
+                }
+                echo "<td>$gpa</td>";
+                echo "</tr>";
+            }
+            $stmt->close();
+        } else {
+            // Display a message if no course is selected
+            echo "<tr><td colspan='8'>Please select a course to view grades.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
 </section>
 
 
@@ -310,53 +344,75 @@ if (isset($_SESSION['grades'])) {
      <!-- View Student List Section -->
         <section class="dashboard-content" id="student-list">
                 <h2>Students<button onclick="addStudentBtn()" id="addStudentBtn" style="float:right;">Assign Student to Subject</button> <button  onclick="assignToAllBtn()" id="assignToAllBtn" style="float:right; margin-right:4px;">Assign All Students to a Subject</button></h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Courses</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentList">
-                        <?php
-                        // Fetch students and their courses from the database
-                        $stmt = $conn->prepare("SELECT s.student_id, s.user_lName, s.user_name, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses 
-                                                FROM students s 
-                                                LEFT JOIN student_courses sc ON s.student_id = sc.student_id 
-                                                LEFT JOIN courses c ON sc.course_id = c.course_id 
-                                                GROUP BY s.student_id
-                                                ORDER BY s.user_lName ASC");
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                    <td>{$row['user_name']}</td>
-                                    <td>{$row['courses']}</td>
-                                    <td>
-                                        <form action='scripts/delete_student_course.php' method='POST' style='display:inline;'>
-                                            <input type='hidden' name='student_id' value='{$row['student_id']}'>
-                                            <div class='input-box-table'><select name='course_id' required>
-                                                <option value=''>Select Course to Remove</option>";
-                                                $courseArray = explode(', ', $row['courses']);
-                                                foreach ($courseArray as $courseName) {
-                                                    echo "<option value='$courseName'>$courseName</option>";
-                                                }
-                                            echo "</select></div>
-                                            <div class='delete'><button type='submit'>Remove Course</button></div>
+                <?php
+                    // Pagination configuration
+                    $limit = 5; // Number of entries per page
+                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                    $offset = ($page - 1) * $limit;
 
-                                    </form>
-                                    </td>
-                                </tr>";
-                        }
-                        if(isset($_GET['error']) && $_GET['error'] == 'course_already_assigned'){
-                            echo "<p style='color:Tomato;'>Course Already Assigned!</p>";
-                        };
-                        $stmt->close();
-                        ?>
-                    </tbody>
-                </table>
-                
+                    // Fetch total number of records
+                    $total_stmt = $conn->prepare("SELECT COUNT(*) as total FROM students");
+                    $total_stmt->execute();
+                    $total_result = $total_stmt->get_result();
+                    $total_row = $total_result->fetch_assoc();
+                    $total_records = $total_row['total'];
+                    $total_pages = ceil($total_records / $limit);
+
+                    // Fetch students and their courses with limit and offset
+                    $stmt = $conn->prepare("SELECT s.student_id, s.user_lName, s.user_name, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses 
+                                            FROM students s 
+                                            LEFT JOIN student_courses sc ON s.student_id = sc.student_id 
+                                            LEFT JOIN courses c ON sc.course_id = c.course_id 
+                                            GROUP BY s.student_id
+                                            ORDER BY s.user_lName ASC
+                                            LIMIT ? OFFSET ?");
+                    $stmt->bind_param("ii", $limit, $offset);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    ?>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Courses</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentList">
+                            <?php
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                        <td>{$row['user_name']}</td>
+                                        <td>{$row['courses']}</td>
+                                        <td>
+                                            <form action='scripts/delete_student_course.php' method='POST' style='display:inline;'>
+                                                <input type='hidden' name='student_id' value='{$row['student_id']}'>
+                                                <div class='input-box-table'><select name='course_id' required>
+                                                    <option value=''>Select Course to Remove</option>";
+                                                    $courseArray = explode(', ', $row['courses']);
+                                                    foreach ($courseArray as $courseName) {
+                                                        echo "<option value='$courseName'>$courseName</option>";
+                                                    }
+                                                echo "</select></div>
+                                                <div class='delete'><button type='submit'>Remove Course</button></div>
+                                            </form>
+                                        </td>
+                                    </tr>";
+                            }
+                            if(isset($_GET['error']) && $_GET['error'] == 'course_already_assigned'){
+                                echo "<p style='color:Tomato;'>Course Already Assigned!</p>";
+                            }
+                            $stmt->close();
+                            ?>
+                        </tbody>
+                    </table>
+                            
+                            <div class="pagination" id="pagination">
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <a href="?page=<?php echo $i; ?>" <?php if ($i == $page) echo 'class="active"'; ?>><?php echo $i; ?></a>
+                                <?php endfor; ?>
+                            </div>
             </section>
 
     
@@ -394,13 +450,13 @@ if (isset($_SESSION['grades'])) {
                 </select>
             </div>
                 <div class="input-box">
-                    <input type="number" name="prelim_grade" placeholder="Prelim Grade"min="0" max="100" required>
+                    <input type="number" name="prelim_grade" placeholder="Prelim Grade"min="0" max="100" step="0.01" required>
                 </div>
                 <div class="input-box">
-                    <input type="number" name="midterm_grade" placeholder="Midterm Grade"min="0" max="100" required>
+                    <input type="number" name="midterm_grade" placeholder="Midterm Grade"min="0" max="100" step="0.01" required>
                 </div>
                 <div class="input-box">
-                    <input type="number" name="final_grade" placeholder="Final Grade"min="0" max="100" required>
+                    <input type="number" name="final_grade" placeholder="Final Grade"min="0" max="100" step="0.01" required>
                 </div>
                 <div class="input-box">
                     <input type="submit" value="Add Grade" id="button">
