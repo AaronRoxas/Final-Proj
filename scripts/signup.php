@@ -18,7 +18,9 @@ if($result && mysqli_num_rows($result) > 0){
     header('Location:../registration.php?error=user_exists');
     exit;
 }
-
+if($user_Pass < 8 && $passVerification < 8){
+    header("Location: ../registration.php?error=password_too_short");
+}
 // Check if password and confirmation match
 if(verifyPass($user_Pass,$passVerification)){
     // SQL query to insert user information into the database

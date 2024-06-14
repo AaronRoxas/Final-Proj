@@ -48,7 +48,6 @@ if(!isset($_SESSION['user_id'])){
                 ";
                 break;
             case 'grade_added':
-            case 'grade_updated':
                 echo "
                 <script>
                     window.onload = function() {
@@ -56,6 +55,14 @@ if(!isset($_SESSION['user_id'])){
                     };
                 </script>";
                 break;
+            case 'grade_updated':
+                echo "
+                    <script>
+                        window.onload = function() {
+                            showUpdatedAlert();
+                        };
+                    </script>";
+                    break;
             case 'course_added':
                 echo "
                 <script>
@@ -137,7 +144,6 @@ if(!isset($_SESSION['user_id'])){
                     #edit-grade{display:block}
                 </style>";  
                 break;
-
         }
     }
     
@@ -168,14 +174,13 @@ if(!isset($_SESSION['user_id'])){
         }
         
     }
-
-
-
-
-    
     ?>    
     <div class="alert success" id="successAlert">
         Added successfully!
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
+    <div class="alert updated" id="updatedAlert">
+        Updated successfully!
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     </div>
 
@@ -223,6 +228,8 @@ if(!isset($_SESSION['user_id'])){
                 <button id="viewCourseListBtn" class="sideBtn">Course List</button><br>
                 <button id="viewStudentListBtn"class="sideBtn">Student List</button><br>
             </ul>
+
+
 
         </aside>
 

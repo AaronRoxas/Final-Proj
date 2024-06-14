@@ -103,6 +103,14 @@ function showSuccessAlert() {
         alert.style.display = 'none';
     }, 2000);
 }
+function showUpdatedAlert() {
+    var alert = document.getElementById('updatedAlert');
+    alert.style.display = 'block';
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        alert.style.display = 'none';
+    }, 2000);
+}
 
 function passSuccessAlert() {
     var alert = document.getElementById('passSuccessAlert');
@@ -143,3 +151,5 @@ function showNoPermAlert() {
         alert.style.display = 'none';
     }, 2000);
 }
+
+

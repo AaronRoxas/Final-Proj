@@ -503,3 +503,24 @@ form .input-box select  {
   background-color: #ddd;
 }
 
+  /* Hide the course list section initially */
+  #course-list-wrapper {
+    display: none;
+}
+
+/* Help Icon Style */
+#help-icon {
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 30px;
+}

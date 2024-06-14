@@ -48,7 +48,7 @@ $stmt->close();
         <aside>
             <h2>Profile</h2>
             <p>Name: <?php echo isset($student['user_name']) ? htmlspecialchars($student['user_name']) : 'N/A'; ?></p>
-            <p>Student Number: S-<?php echo htmlspecialchars($student_id); ?></p>
+            <p>Student ID: S-<?php echo $student_id; ?></p>
             <p>Email: <?php echo htmlspecialchars($_SESSION['user_email']); ?></p>
 
             <h2>Quick Access</h2>
@@ -56,10 +56,10 @@ $stmt->close();
             <button id="viewCourseListBtn" class="sideBtn">Course List</button><br>
 
             <h2>Settings</h2>
-            <button class="sideBtn" onclick="document.location='change-settings-stud.php'" >Change Password</button>
+            <button class="sideBtn" onclick="document.location='change-settings-stud.php'">Change Password</button>
         </aside>
-            
-    <div class="dashboard-content" id="dashboard">
+
+        <div class="dashboard-content" id="dashboard">
     <div class="welcome-message">
         <h2>Welcome,  <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; }?>!</h2>
         <p>Here's what's happening today:</p>
@@ -125,7 +125,24 @@ $stmt->close();
     </div>
 </div>
 
-        <section id="table-wrapper" class="dashboard-content" style="margin-left: 50px;x">
+        <!-- Help Icon -->
+        <div id="help-icon">&#x3F;</div>
+
+        <!-- Help Modal -->
+        <div id="help-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>How to Navigate the Site</h2>
+                <hr>
+                <p><strong>Dashboard:</strong> View announcements and other events.</p>
+                <p><strong>Grade List:</strong> Click the "Grade List" button to view your grades.</p>
+                <p><strong>Course List:</strong> Click the "Course List" button to see the courses you are enrolled in.</p>
+                <p><strong>Change Password:</strong> Click the "Change Password" button to update your password.</p>
+                <p><strong>Logout:</strong> Click "Logout" in the navigation bar to sign out.</p>
+            </div>
+        </div>
+
+        <section id="table-wrapper" class="dashboard-content" style="margin-left: 50px;">
             <h2>Grade List</h2>
             <table class="fl-table">
                 <thead>
@@ -254,6 +271,22 @@ $stmt->close();
             document.getElementById('table-wrapper').style.display = 'block';
             document.getElementById('course-list-wrapper').style.display = 'none';
         });
+        // Get the modal
+        var modal = document.getElementById("help-modal");
+        var btn = document.getElementById("help-icon");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
     </script>
 </body>
 </html>
