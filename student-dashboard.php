@@ -58,8 +58,75 @@ $stmt->close();
             <h2>Settings</h2>
             <button class="sideBtn" onclick="document.location='change-settings-stud.php'" >Change Password</button>
         </aside>
+            
+    <div class="dashboard-content" id="dashboard">
+    <div class="welcome-message">
+        <h2>Welcome,  <?php if(isset($_SESSION['user_email'])){ echo $_SESSION['username']; }?>!</h2>
+        <p>Here's what's happening today:</p>
+    </div>
+    <div class="quick-stats">
+        <div class="stat-item">
+            <h3>Students Count</h3>
+            <p>
+                <?php
+                    $query = "SELECT COUNT(*) AS total FROM students";
+                    $rs = mysqli_query($conn, $query);
 
-        <section id="table-wrapper" class="content" style="margin-left: 50px;">
+                    if ($rs) {
+                        $row = mysqli_fetch_assoc($rs);
+                        $count = $row['total'];
+                        echo $count;
+                    }
+                ?>
+            </p>
+        </div>
+        <div class="stat-item">
+            <h3>Courses Enrolled</h3>
+            <p>
+                <?php
+                    $query = "SELECT COUNT(*) AS total FROM student_courses WHERE student_id = $student_id";
+                    $rs = mysqli_query($conn, $query);
+
+                    if ($rs) {
+                        $row = mysqli_fetch_assoc($rs);
+                        $count = $row['total'];
+                        echo $count;
+                    }
+                ?>
+            </p>
+        </div>
+        <div class="stat-item">
+            <h3>Teachers Count</h3>
+            <p>
+                <?php
+                    $query = "SELECT COUNT(*) AS total FROM teachers";
+                    $rs = mysqli_query($conn, $query);
+
+                    if ($rs) {
+                        $row = mysqli_fetch_assoc($rs);
+                        $count = $row['total'];
+                        echo $count;
+                    }
+                ?>
+                </p>
+        </div>
+    </div>
+
+    <div class="upcoming-events">
+        <h3>Upcoming Events</h3>
+        <ul>
+            <li>Final Exams - June 10 to June 14</li>
+            <li>Presentation- June 15</li>
+        </ul>
+    </div>
+    <div class="announcements">
+        <h3>Announcements</h3>
+        <p>Summer break starts on June 17</p>
+    </div>
+</div>
+
+        <section id="table-wrapper" class="dashboard-content" style="margin-left: 50px;x">
+            <h2>Grade List</h2>
             <table class="fl-table">
                 <thead>
                     <tr>
@@ -145,7 +212,7 @@ $stmt->close();
             </table>
         </section>
 
-        <section id="course-list-wrapper" class="content" style="margin-left: 50px;">
+        <section id="course-list-wrapper" class="dashboard-content" style="margin-left: 50px;">
             <h2>Course List</h2>
             <table class="fl-table">
                 <thead>

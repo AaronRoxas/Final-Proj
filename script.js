@@ -30,6 +30,7 @@ var dashboard = document.getElementById('dashboard');
 var viewGradeListPop = document.getElementById('grade');
 var viewCourseListPop = document.getElementById('course-list');
 var viewStudentListPop = document.getElementById('student-list');
+var editGradePop = document.getElementById('edit-grade');
 
 // When the user clicks the button, open the modal 
 addGradeBtn.onclick = function() {
@@ -58,13 +59,15 @@ viewCourseListBtn.onclick = function() {
     viewGradeListPop.style.display = "none"; 
     viewStudentListPop.style.display = "none"; 
     dashboard.style.display = "none"; 
+    editGradePop.style.display ="none";
 }
 
 viewStudentListBtn.onclick = function() {
     viewStudentListPop.style.display = "block"; 
     viewCourseListPop.style.display = "none"; 
     viewGradeListPop.style.display = "none"; 
-    dashboard.style.display = "none"; 
+    dashboard.style.display = "none";
+    editGradePop.style.display ="none"; 
 }
 
 dashboardBtn.onclick = function() {
@@ -72,6 +75,7 @@ dashboardBtn.onclick = function() {
     viewStudentListPop.style.display = "none"; 
     viewCourseListPop.style.display = "none"; 
     viewGradeListPop.style.display = "block"; 
+    editGradePop.style.display ="none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
