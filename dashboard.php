@@ -221,17 +221,39 @@ if(!isset($_SESSION['user_id'])){
                 <h2>Settings</h2>
                 <p><a href="change-settings.php">Change Password</a></p>
             </ul>
-
             <ul>
             <h2>Quick Access</h2>
                 <button id="dashboardBtn" class="sideBtn">Dashboard</button><br>
                 <button id="viewCourseListBtn" class="sideBtn">Course List</button><br>
                 <button id="viewStudentListBtn"class="sideBtn">Student List</button><br>
             </ul>
-
-
-
         </aside>
+
+            <!-- Help Icon -->
+    <div id="help-icon">&#x3F;</div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>How to Navigate the Teacher's Dashboard</h2>
+            <hr>
+            <p><strong>Dashboard:</strong> View announcements and important updates.</p>
+            <p><strong>Student List:</strong> Click the "Student List" button to view and manage your students.</p>
+            <p><strong>Course Management:</strong> Click the "Course Management" button to add, edit, or remove courses.</p>
+            <p><strong>Settings:</strong> Click the "Settings" button to update your profile and preferences.</p>
+            <p><strong>Logout:</strong> Click "Logout" in the navigation bar to sign out.</p>
+            <hr>
+            <h3>Managing Grades</h3>
+            <p><strong>Add Grades:</strong> Navigate to the "Grades" section, select a student, and enter the grades for Prelim, Midterm, and Finals.</p>
+            <p><strong>View Grades:</strong> In the "Grades" section, select a course to view the grades of all students enrolled in the course.</p>
+            <hr>
+            <h3>Course and Student Management</h3>
+            <p><strong>Add Course:</strong> Go to "Course List" and click "Add Course" to enter the course details.</p>
+            <p><strong>Assign Student to a Subject:</strong> In "Student List," select a course and assign students from the student list.</p>
+        </div>
+    </div>
+
 
     <div class="dashboard-content" id="dashboard">
     <div class="welcome-message">
@@ -467,12 +489,7 @@ if (isset($_POST['course_id'])) {
         ?>
     </tbody>
 </table>
-
 </section>
-
-
-
-
 <!-- Courses Manage -->
 <section class="dashboard-content" id="course-list">
     <?php
@@ -611,31 +628,31 @@ if (isset($_POST['course_id'])) {
                     $student_name = $_GET['student_name'];
                 }
             ?>
-
-            <!-- Edit Grade Section -->
-            <section class="dashboard-content" id="edit-grade">
-                <h2>Editing Grade for <?php echo htmlspecialchars($student_name); ?></h2> <!-- Student Name -->
-                <form method="post" action="scripts/edit-grade.php">
-                    <input type="hidden" name="grade_id" value="<?php echo $grade['grade_id']; ?>">
-                    <div class="input-box">
-                        <label for="prelim_grade" class="text-center">Prelim</label>
-                        <input type="text" id="prelim_grade" name="prelim_grade" value="<?php echo isset($grade['prelim_grade']) ? htmlspecialchars($grade['prelim_grade']) : ''; ?>">
-                    </div>
-                    <div class="input-box">
-                        <label for="midterm_grade" class="text-center">Midterm</label>
-                        <input type="text" id="midterm_grade" name="midterm_grade" value="<?php echo isset($grade['midterm_grade']) ? htmlspecialchars($grade['midterm_grade']) : ''; ?>">
-                    </div>
-                    <div class="input-box">
-                        <label for="final_grade" class="text-center">Finals</label>
-                        <input type="text" id="final_grade" name="final_grade" value="<?php echo isset($grade['final_grade']) ? htmlspecialchars($grade['final_grade']) : ''; ?>">
-                    </div>
-                    <div class="input-box">
-                        <input type="submit" value="Update Grade" id="button">
-                    </div>
-                </form>
-            </section>
-
-
+    <!-- Edit Grade Section -->
+    <section class="dashboard-content" id="edit-grade">
+        <h2>Editing Grade for <?php echo htmlspecialchars($student_name); ?></h2> <!-- Student Name -->
+        <form method="post" action="scripts/edit-grade.php">
+            <input type="hidden" name="grade_id" value="<?php echo $grade['grade_id']; ?>">
+            <div class="input-box">
+                <label for="prelim_grade" class="text-center">Prelim</label>
+                <input type="text" id="prelim_grade" name="prelim_grade" value="<?php echo isset($grade['prelim_grade']) ? htmlspecialchars($grade['prelim_grade']) : ''; ?>">
+            </div>
+            <div class="input-box">
+                <label for="midterm_grade" class="text-center">Midterm</label>
+                <input type="text" id="midterm_grade" name="midterm_grade" value="<?php echo isset($grade['midterm_grade']) ? htmlspecialchars($grade['midterm_grade']) : ''; ?>">
+            </div>
+            <div class="input-box">
+                <label for="final_grade" class="text-center">Finals</label>
+                <input type="text" id="final_grade" name="final_grade" value="<?php echo isset($grade['final_grade']) ? htmlspecialchars($grade['final_grade']) : ''; ?>">
+            </div>
+            <div class="input-box">
+                <input type="submit" value="Update Grade" id="button">
+            </div>
+            <div class="input-box" style="text-align:center">
+                <input type="button" id="cancel-button" id="button" value="Cancel"></input>
+            </div>
+        </form>
+    </section>
 
 
     <!-- Add Grade Modal -->

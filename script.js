@@ -90,8 +90,11 @@ window.onclick = function(event) {
         assignToAllModal.style.display = "none";
     } else if (event.target == viewGradeCoursesModal) {
         viewGradeCoursesModal.style.display = "none";
+    }else if(event.target == document.getElementById('help-modal')) {
+        document.getElementById('help-modal').style.display = 'none';
     }
 }
+
 
 // Functions to show alerts
 function showSuccessAlert() {
@@ -151,5 +154,9 @@ function showNoPermAlert() {
         alert.style.display = 'none';
     }, 2000);
 }
-
-
+document.getElementById('help-icon').onclick = function() {
+    document.getElementById('help-modal').style.display = 'block';
+}
+document.getElementById('cancel-button').onclick = function() {
+    window.history.back(); 
+}

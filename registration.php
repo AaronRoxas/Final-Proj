@@ -43,6 +43,9 @@
                     if(isset($_GET['error']) && $_GET['error'] == 'user_exists'){
                         echo "<p style='color: red;'>Email already registered!</p>";
                     }
+                    if(isset($_GET['error']) && $_GET['error'] == 'password_too_short'){
+                        echo "<p style='color: red;'>Password must contain atleast 8 characters</p>";
+                    }
                 ?>
             </form>   
         </div>
