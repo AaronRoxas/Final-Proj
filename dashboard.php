@@ -4,6 +4,9 @@ session_start();
 if (isset($_SESSION['grades'])) {
     unset($_SESSION['grades']);
 }
+if(!isset($_SESSION['user_id'])){
+    header("Location: index.html");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +48,7 @@ if (isset($_SESSION['grades'])) {
                 ";
                 break;
             case 'grade_added':
+            case 'grade_updated':
                 echo "
                 <script>
                     window.onload = function() {
@@ -77,8 +81,35 @@ if (isset($_SESSION['grades'])) {
                 break;
     
             case 'course_removed':
-                
+                echo "
+                <script>
+                    window.onload = function() {
+                        showRemoveAlert();
+                    };
+                </script>
+                <style>
+                    #student-list{display:none}
+                    #course-list{display:block}
+                    #grade{display:none}
+                    #dashboard{display:none}
+                </style>";     
                 break;
+            
+            case 'grade_removed':
+                echo "
+                <script>
+                    window.onload = function() {
+                        showRemoveAlert();
+                    };
+                </script>
+                <style>
+                    #student-list{display:none}
+                    #course-list{display:none}
+                    #grade{display:block}
+                    #dashboard{display:block}
+                </style>";     
+                break;
+            
     
             case 'no_grades_found':
                 echo "
@@ -88,6 +119,7 @@ if (isset($_SESSION['grades'])) {
                     };
                 </script>";
                 break;
+
             case "not_assigned":
                 echo " <script>
                         window.onload = function() {
@@ -95,6 +127,17 @@ if (isset($_SESSION['grades'])) {
                         };
                     </script>";
                     break;
+            case "edit-grade":
+                echo"
+                <style>
+                    #student-list{display:none}
+                    #course-list{display:none}
+                    #grade{display:none}
+                    #dashboard{display:none}
+                    #edit-grade{display:block}
+                </style>";  
+                break;
+
         }
     }
     
@@ -125,6 +168,7 @@ if (isset($_SESSION['grades'])) {
         }
         
     }
+
 
 
 
@@ -248,6 +292,7 @@ if (isset($_SESSION['grades'])) {
     </div>
 </div>
 
+
 <!-- Grade List Section -->
 <section class="dashboard-content" id="grade">
     <h2>Grades 
@@ -258,6 +303,7 @@ if (isset($_SESSION['grades'])) {
     if (isset($_GET['error']) && $_GET['error'] == 'course_not_assigned') {
         echo "<p style='color: red;'>Course is not assigned to student!</p>";
     }
+
     ?>
 
     <!-- Grades Table -->
@@ -272,68 +318,151 @@ if (isset($_SESSION['grades'])) {
             <th>Final</th>
             <th>Final Grade</th>
             <th>GPA</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody id="gradeList">
         <?php
-        if (isset($_POST['course_id'])) {
-            $course_id = $_POST['course_id'];
-            // Fetch grades and professor's name from the database for the selected course
-            $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade, 
-                                        (SELECT t.user_name FROM courses c2 JOIN teachers t ON c2.teacher_id = t.teacher_id WHERE c2.course_id = g.course_id) AS professor
-                                    FROM grades g 
-                                    JOIN students s ON g.student_id = s.student_id 
-                                    JOIN courses c ON g.course_id = c.course_id
-                                    WHERE g.course_id = ?");
-            $stmt->bind_param("s", $course_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['professor']}</td>
-                        <td>{$row['user_name']}</td>
-                        <td>{$row['course_name']}</td>
-                        <td>{$row['prelim_grade']}</td>
-                        <td>{$row['midterm_grade']}</td>
-                        <td>{$row['final_grade']}</td>
-                        <td>{$row['overall_grade']}</td>";
+if (isset($_POST['course_id'])) {
+    $course_id = $_POST['course_id'];
+    $_SESSION['last_viewed_course_id'] = $course_id; // Save the last viewed course ID in the session
 
-                // GPA calculation based on overall_grade
-                $gpa = '';
-                if ($row['overall_grade'] >= 99) {
-                    $gpa = '1.00';
-                } elseif ($row['overall_grade'] >= 96) {
-                    $gpa = '1.25';
-                } elseif ($row['overall_grade'] >= 93) {
-                    $gpa = '1.50';
-                } elseif ($row['overall_grade'] >= 90) {
-                    $gpa = '1.75';
-                } elseif ($row['overall_grade'] >= 87) {
-                    $gpa = '2.00';
-                } elseif ($row['overall_grade'] >= 84) {
-                    $gpa = '2.25';
-                } elseif ($row['overall_grade'] >= 81) {
-                    $gpa = '2.50';
-                } elseif ($row['overall_grade'] >= 78) {
-                    $gpa = '2.75';
-                } elseif ($row['overall_grade'] >= 75) {
-                    $gpa = '3.00';
-                } else {
-                    $gpa = '5.00';
-                }
-                echo "<td>$gpa</td>";
-                echo "</tr>";
-            }
-            $stmt->close();
+    // Fetch grades and professor's name from the database for the selected course
+    $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade, g.grade_id,
+                                (SELECT t.user_name FROM courses c2 JOIN teachers t ON c2.teacher_id = t.teacher_id WHERE c2.course_id = g.course_id) AS professor
+                            FROM grades g 
+                            JOIN students s ON g.student_id = s.student_id 
+                            JOIN courses c ON g.course_id = c.course_id
+                            WHERE g.course_id = ?");
+    $stmt->bind_param("s", $course_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>{$row['professor']}</td>
+                <td>{$row['user_name']}</td>
+                <td>{$row['course_name']}</td>
+                <td>{$row['prelim_grade']}</td>
+                <td>{$row['midterm_grade']}</td>
+                <td>{$row['final_grade']}</td>
+                <td>{$row['overall_grade']}</td>";
+        $gpa = '';
+        if ($row['overall_grade'] >= 99) {
+            $gpa = '1.00';
+        } elseif ($row['overall_grade'] >= 96) {
+            $gpa = '1.25';
+        } elseif ($row['overall_grade'] >= 93) {
+            $gpa = '1.50';
+        } elseif ($row['overall_grade'] >= 90) {
+            $gpa = '1.75';
+        } elseif ($row['overall_grade'] >= 87) {
+            $gpa = '2.00';
+        } elseif ($row['overall_grade'] >= 84) {
+            $gpa = '2.25';
+        } elseif ($row['overall_grade'] >= 81) {
+            $gpa = '2.50';
+        } elseif ($row['overall_grade'] >= 78) {
+            $gpa = '2.75';
+        } elseif ($row['overall_grade'] >= 75) {
+            $gpa = '3.00';
         } else {
-            // Display a message if no course is selected
-            echo "<tr><td colspan='8'>Please select a course to view grades.</td></tr>";
+            $gpa = '5.00';
         }
+        echo "<td>$gpa</td>";
+        echo "<td>
+                <form method='get' action='dashboard.php'>
+                    <input type='hidden' name='section' value='edit-grade'>
+                    <input type='hidden' name='message' value='edit-grade'>
+                    <input type='hidden' name='grade_id' value='{$row['grade_id']}'>
+                    <input type='hidden' name='student_name' value='{$row['user_name']}'>
+                    <input type='hidden' name='prelim_grade' value='{$row['prelim_grade']}'>
+                    <input type='hidden' name='midterm_grade' value='{$row['midterm_grade']}'>
+                    <input type='hidden' name='final_grade' value='{$row['final_grade']}'>
+                    <button type='submit'>Edit</button>
+                </form>
+                <form method='post' action='scripts/remove-grade.php' style='display:inline-block;'>
+                    <input type='hidden' name='grade_id' value='{$row['grade_id']}'>
+                    <button type='submit' style='background-color: #ce5252; color: #fff; border: none;border-radius: 5px;cursor: pointer;place-items: center;'>Remove</button>
+                </form>
+              </td>";
+        echo "</tr>";
+    }
+    $stmt->close();
+} else {
+    // If no course is selected, try to use the last viewed course
+    if (isset($_SESSION['last_viewed_course_id'])) {
+        $course_id = $_SESSION['last_viewed_course_id'];
+
+        // Fetch grades and professor's name from the database for the last viewed course
+        $stmt = $conn->prepare("SELECT s.user_name, c.course_name, g.prelim_grade, g.midterm_grade, g.final_grade, g.overall_grade, g.grade_id,
+                                    (SELECT t.user_name FROM courses c2 JOIN teachers t ON c2.teacher_id = t.teacher_id WHERE c2.course_id = g.course_id) AS professor
+                                FROM grades g 
+                                JOIN students s ON g.student_id = s.student_id 
+                                JOIN courses c ON g.course_id = c.course_id
+                                WHERE g.course_id = ?");
+        $stmt->bind_param("s", $course_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>
+                    <td>{$row['professor']}</td>
+                    <td>{$row['user_name']}</td>
+                    <td>{$row['course_name']}</td>
+                    <td>{$row['prelim_grade']}</td>
+                    <td>{$row['midterm_grade']}</td>
+                    <td>{$row['final_grade']}</td>
+                    <td>{$row['overall_grade']}</td>";
+            $gpa = '';
+            if ($row['overall_grade'] >= 99) {
+                $gpa = '1.00';
+            } elseif ($row['overall_grade'] >= 96) {
+                $gpa = '1.25';
+            } elseif ($row['overall_grade'] >= 93) {
+                $gpa = '1.50';
+            } elseif ($row['overall_grade'] >= 90) {
+                $gpa = '1.75';
+            } elseif ($row['overall_grade'] >= 87) {
+                $gpa = '2.00';
+            } elseif ($row['overall_grade'] >= 84) {
+                $gpa = '2.25';
+            } elseif ($row['overall_grade'] >= 81) {
+                $gpa = '2.50';
+            } elseif ($row['overall_grade'] >= 78) {
+                $gpa = '2.75';
+            } elseif ($row['overall_grade'] >= 75) {
+                $gpa = '3.00';
+            } else {
+                $gpa = '5.00';
+            }
+            echo "<td>$gpa</td>";
+            echo "<td>
+                    <form method='get' action='dashboard.php'>
+                        <input type='hidden' name='section' value='edit-grade'>
+                        <input type='hidden' name='message' value='edit-grade'>
+                        <input type='hidden' name='grade_id' value='{$row['grade_id']}'>
+                        <input type='hidden' name='student_name' value='{$row['user_name']}'>
+                        <input type='hidden' name='prelim_grade' value='{$row['prelim_grade']}'>
+                        <input type='hidden' name='midterm_grade' value='{$row['midterm_grade']}'>
+                        <input type='hidden' name='final_grade' value='{$row['final_grade']}'>
+                        <button type='submit'>Edit</button>
+                    </form>
+                    <form method='post' action='scripts/remove-grade.php' style='display:inline-block;'>
+                        <input type='hidden' name='grade_id' value='{$row['grade_id']}'>
+                        <button type='submit' style='background-color: #ce5252; color: #fff; border: none;border-radius: 5px;cursor: pointer;place-items: center;'>Remove</button>
+                    </form>
+                  </td>";
+            echo "</tr>";
+        }
+        $stmt->close();
+    }
+}
+
         ?>
     </tbody>
 </table>
 
 </section>
+
 
 
 
@@ -461,6 +590,47 @@ if (isset($_SESSION['grades'])) {
                                     } ?>
                             </div>
             </section>
+
+            <?php
+                $grade = null;
+                $student_name = '';
+                if (isset($_GET['grade_id'], $_GET['student_name'], $_GET['prelim_grade'], $_GET['midterm_grade'], $_GET['final_grade'])) {
+                    $grade = [
+                        'grade_id' => $_GET['grade_id'],
+                        'prelim_grade' => $_GET['prelim_grade'],
+                        'midterm_grade' => $_GET['midterm_grade'],
+                        'final_grade' => $_GET['final_grade']
+                    ];
+                    $student_name = $_GET['student_name'];
+                }
+            ?>
+
+            <!-- Edit Grade Section -->
+            <section class="dashboard-content" id="edit-grade">
+                <h2>Editing Grade for <?php echo htmlspecialchars($student_name); ?></h2> <!-- Student Name -->
+                <form method="post" action="scripts/edit-grade.php">
+                    <input type="hidden" name="grade_id" value="<?php echo $grade['grade_id']; ?>">
+                    <div class="input-box">
+                        <label for="prelim_grade" class="text-center">Prelim</label>
+                        <input type="text" id="prelim_grade" name="prelim_grade" value="<?php echo isset($grade['prelim_grade']) ? htmlspecialchars($grade['prelim_grade']) : ''; ?>">
+                    </div>
+                    <div class="input-box">
+                        <label for="midterm_grade" class="text-center">Midterm</label>
+                        <input type="text" id="midterm_grade" name="midterm_grade" value="<?php echo isset($grade['midterm_grade']) ? htmlspecialchars($grade['midterm_grade']) : ''; ?>">
+                    </div>
+                    <div class="input-box">
+                        <label for="final_grade" class="text-center">Finals</label>
+                        <input type="text" id="final_grade" name="final_grade" value="<?php echo isset($grade['final_grade']) ? htmlspecialchars($grade['final_grade']) : ''; ?>">
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" value="Update Grade" id="button">
+                    </div>
+                </form>
+            </section>
+
+
+
+
     <!-- Add Grade Modal -->
     <div id="addGradeModal" class="modal">
         <div class="modal-content">
@@ -584,33 +754,34 @@ if (isset($_SESSION['grades'])) {
         </form>
     </div>
 </div>
-
 <!-- View Specific Grade Course Modal  -->
 <div id="viewGradeCoursesModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>View Grades for Specific Course</h2>
-            <!-- Form to select course -->
-    <form action="dashboard.php" method="POST">
-        <div class="input-box">
-            <select name="course_id" required>
-                <option value="" disabled selected>Select Course</option>
-                <?php
-                // Fetch courses from the database
-                $stmt = $conn->prepare("SELECT course_id, course_name FROM courses");
-                $stmt->execute();
-                $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
-                }
-                $stmt->close();
-                ?>
-            </select>
-        </div>
-        <div class="input-box"><input type="submit" value="View Grades" id="button"></div>
-    </form>
+        <!-- Form to select course -->
+        <form action="dashboard.php" method="POST">
+            <div class="input-box">
+                <select name="course_id" required>
+                    <option value="" disabled selected>Select Course</option>
+                    <?php
+                    // Fetch courses assigned to the logged-in teacher from the database
+                    $stmt = $conn->prepare("SELECT course_id, course_name FROM courses WHERE teacher_id = ?");
+                    $stmt->bind_param("i", $teacher_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value=\"{$row['course_id']}\">{$row['course_name']}</option>";
+                    }
+                    $stmt->close();
+                    ?>
+                </select>
+            </div>
+            <div class="input-box"><input type="submit" value="View Grades" id="button"></div>
+        </form>
     </div>
 </div>
+
 </main>
 
 <script src="script.js"></script>

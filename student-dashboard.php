@@ -1,7 +1,9 @@
 <?php
 include "scripts/db_conn.php";
 session_start();
-
+if(!isset($_SESSION['user_id'])){
+    header("Location: index.html");
+}
 // Fetch student details
 $student_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT s.user_name, GROUP_CONCAT(c.course_id SEPARATOR ', ') AS course_ids, GROUP_CONCAT(c.course_name SEPARATOR ', ') AS courses, GROUP_CONCAT(t.user_name SEPARATOR ', ') AS teachers
@@ -68,6 +70,7 @@ $stmt->close();
                         <th>Midterm</th>
                         <th>Finals</th>
                         <th>Overall Grade</th>
+                        <th>GPA</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,14 +98,39 @@ $stmt->close();
                         $stmt_grades->bind_param("is", $student_id, $course_id);
                         $stmt_grades->execute();
                         $result_grades = $stmt_grades->get_result();
-                        if ($row_grades = $result_grades->fetch_assoc()) {
+                        if ($row = $result_grades->fetch_assoc()) {
                             // Grades exist for this course
-                            echo "<td>{$row_grades['prelim_grade']}</td>";
-                            echo "<td>{$row_grades['midterm_grade']}</td>";
-                            echo "<td>{$row_grades['final_grade']}</td>";
-                            echo "<td>{$row_grades['overall_grade']}</td>";
+                            echo "<td>{$row['prelim_grade']}</td>";
+                            echo "<td>{$row['midterm_grade']}</td>";
+                            echo "<td>{$row['final_grade']}</td>";
+                            echo "<td>{$row['overall_grade']}</td>";
+                            $gpa = '';
+                            if ($row['overall_grade'] >= 99) {
+                                $gpa = '1.00';
+                            } elseif ($row['overall_grade'] >= 96) {
+                                $gpa = '1.25';
+                            } elseif ($row['overall_grade'] >= 93) {
+                                $gpa = '1.50';
+                            } elseif ($row['overall_grade'] >= 90) {
+                                $gpa = '1.75';
+                            } elseif ($row['overall_grade'] >= 87) {
+                                $gpa = '2.00';
+                            } elseif ($row['overall_grade'] >= 84) {
+                                $gpa = '2.25';
+                            } elseif ($row['overall_grade'] >= 81) {
+                                $gpa = '2.50';
+                            } elseif ($row['overall_grade'] >= 78) {
+                                $gpa = '2.75';
+                            } elseif ($row['overall_grade'] >= 75) {
+                                $gpa = '3.00';
+                            } else {
+                                $gpa = '5.00';
+                            }
+                            echo "<td>$gpa</td>";
+                            echo "</tr>";
                         } else {
                             // No grades yet for this course
+                            echo "<td>-</td>";
                             echo "<td>-</td>";
                             echo "<td>-</td>";
                             echo "<td>-</td>";

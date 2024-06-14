@@ -1,5 +1,8 @@
 <?php
 session_start();
+if(!isset($_SESSION['user_id'])){
+    header("Location: index.html");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +11,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
     <link rel="stylesheet" href="styles/manage-style.css">
+    <link rel="icon" type="image/x-icon" href="asset/img/icon.png">
 </head>
 <body>
     <header>

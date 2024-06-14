@@ -108,7 +108,7 @@ aside ul li a:hover {
   text-align: left;
 }
 
-#grade,#course-list,#student-list{
+#grade,#course-list,#student-list,#edit-grade{
   display:none;
 }
 
