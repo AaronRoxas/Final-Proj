@@ -108,7 +108,7 @@ aside ul li a:hover {
   text-align: left;
 }
 
-#grade,#course-list,#student-list{
+#grade,#course-list,#student-list,#edit-grade{
   display:none;
 }
 
@@ -136,6 +136,10 @@ aside ul li a:hover {
   border-color: rgb(163, 13, 28);
 }
 .alert.noPerm {
+  background-color: rgb(231, 34, 50);
+  border-color: rgb(163, 13, 28);
+}
+.alert.alreadyExist {
   background-color: rgb(231, 34, 50);
   border-color: rgb(163, 13, 28);
 }
@@ -455,30 +459,24 @@ form .input-box select  {
 }
 
 .fl-table {
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: normal;
-  border: none;
+  width: 100%;
   border-collapse: collapse;
-  width: 1200px; /* Set a fixed width for the table */
-  max-width: 100%;
-  white-space: nowrap;
-  background-color: white;
+  margin-top: 10px;
 }
 
-.fl-table td, .fl-table th {
-  text-align: center;
+.fl-table th, .fl-table td {
+  text-align: left;
   padding: 8px;
-  width: 200px; /* Set a fixed width for the table cells */
-}
-
-.fl-table td {
-  font-size: 12px;
+  border: 1px solid #ddd;
 }
 
 .fl-table thead th {
-  color: #ffffff;
-  background: #4CAF50;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.fl-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 .pagination {
   display: flex;
@@ -505,3 +503,45 @@ form .input-box select  {
   background-color: #ddd;
 }
 
+  /* Hide the course list section initially */
+  #course-list-wrapper {
+    display: none;
+}
+
+/* Help Icon Style */
+#help-icon {
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 30px;
+}
+#cancel-button {
+  background-color: #ce5252;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+#cancel-button:hover{
+  background-color: #972020;
+  color: white;
+}
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Adds space between the buttons */
+}
