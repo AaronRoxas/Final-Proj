@@ -158,5 +158,6 @@ document.getElementById('help-icon').onclick = function() {
     document.getElementById('help-modal').style.display = 'block';
 }
 document.getElementById('cancel-button').onclick = function() {
-    window.history.back(); 
+    window.location.href = "dashboard.php";
 }
+
