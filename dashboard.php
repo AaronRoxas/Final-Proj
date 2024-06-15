@@ -240,7 +240,7 @@ if(!isset($_SESSION['user_id'])){
             <hr>
             <p><strong>Dashboard:</strong> View announcements and important updates.</p>
             <p><strong>Student List:</strong> Click the "Student List" button to view and manage your students.</p>
-            <p><strong>Course Management:</strong> Click the "Course Management" button to add, edit, or remove courses.</p>
+            <p><strong>Course List:</strong> Click the "Course List" button to add, edit, or remove courses.</p>
             <p><strong>Settings:</strong> Click the "Settings" button to update your profile and preferences.</p>
             <p><strong>Logout:</strong> Click "Logout" in the navigation bar to sign out.</p>
             <hr>
